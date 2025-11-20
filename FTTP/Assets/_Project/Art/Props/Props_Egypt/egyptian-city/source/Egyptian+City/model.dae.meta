@@ -3,7 +3,37 @@ guid: 40598de51230652488971bcf4978a420
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BrickOldSharp0108_5_S_1_
+    second: {fileID: 2100000, guid: 60e8cebb603adce4394c4ff4c60e0c1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BrickOldSharp0175_9_S_1_
+    second: {fileID: 2100000, guid: efb26b276a463404f8b14f447f41c412, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MarbleTiles0040_1_S_1_
+    second: {fileID: 2100000, guid: 2a46cdb216a5f3f40875e4720fc0e911, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MarbleTiles0040_1_S_1__0
+    second: {fileID: 2100000, guid: c395ff8c92b749b42ae34324dd6baf8d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material
+    second: {fileID: 2100000, guid: ee6714ba350b2cd4580a8ccf87e6b613, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material_1
+    second: {fileID: 2100000, guid: 19172521d45758c44b2fad348f3bf446, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
