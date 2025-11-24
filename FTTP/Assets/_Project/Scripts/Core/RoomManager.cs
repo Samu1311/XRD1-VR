@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Handles loading/unloading room scenes additively.
 /// Keeps one persistent XR rig and teleports it to spawn points in rooms.
+/// Also removes the Main portal when entering any other room.
 /// </summary>
 public class RoomManager : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class RoomManager : MonoBehaviour
     /// <summary>
     /// Loads a room scene by name, unloads the previous room,
     /// and moves the XR Rig to the PlayerSpawnPoint.
+    /// Also destroys the Main portal so it doesn't appear in the new room.
     /// </summary>
     public void LoadRoomByName(string roomName)
     {
@@ -55,24 +57,32 @@ public class RoomManager : MonoBehaviour
 
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
     {
-        // Load the scene additively
+        // --- LOAD NEW ROOM ADDITIVELY ---
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
             yield return null;
 
 
-        // Unload previous room (but NOT Main)
-        if (!string.IsNullOrEmpty(_currentRoom))
+        // --- REMOVE ONLY THE MAIN PORTAL ---
+        GameObject mainPortal = GameObject.FindWithTag("MainPortal");
+        if (mainPortal != null)
         {
-            if (_currentRoom != "Main")
-                SceneManager.UnloadSceneAsync(_currentRoom);
+            Destroy(mainPortal);
+            Debug.Log("Main portal removed when entering new room.");
+        }
+
+
+        // --- UNLOAD PREVIOUS ROOM (NOT Main) ---
+        if (!string.IsNullOrEmpty(_currentRoom) && _currentRoom != "Main")
+        {
+            SceneManager.UnloadSceneAsync(_currentRoom);
         }
 
         _currentRoom = roomName;
 
 
         // --- MOVE PLAYER TO SPAWN POINT ---
-        yield return null; // Wait one frame so objects spawn
+        yield return null; // Wait one frame so objects spawn in the new scene
 
         GameObject spawn = GameObject.FindWithTag("PlayerSpawn");
 
@@ -90,7 +100,7 @@ public class RoomManager : MonoBehaviour
             yield break;
         }
 
-        // Move the XR rig to the room's spawn location
+        // Teleport XR rig to spawn location
         rig.MoveCameraToWorldLocation(spawn.transform.position);
         rig.transform.rotation = spawn.transform.rotation;
 
