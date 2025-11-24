@@ -34,6 +34,12 @@ public class PressurePlate : MonoBehaviour
     [Header("Events")]
     public UnityEvent<bool> OnPlateStateChanged;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip pressSound;
+    public AudioClip releaseSound;
+
+
     private int _objectsOnPlate = 0;
     private bool _isPressed;
     private Vector3 _initialLocalPos;
@@ -85,8 +91,22 @@ public class PressurePlate : MonoBehaviour
         if (newState != _isPressed)
         {
             _isPressed = newState;
+
+            // PLAY AUDIO FEEDBACK
+            PlayPressSound(_isPressed);
+
             OnPlateStateChanged?.Invoke(_isPressed);
         }
+    }
+
+    private void PlayPressSound(bool pressed)
+    {
+        if (audioSource == null) return;
+
+        AudioClip clip = pressed ? pressSound : releaseSound;
+
+        if (clip != null)
+            audioSource.PlayOneShot(clip);
     }
 
     private void Update()
