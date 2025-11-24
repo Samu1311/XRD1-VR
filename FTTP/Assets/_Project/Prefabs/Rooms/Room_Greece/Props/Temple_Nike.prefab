@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4103694323746834451}
   - component: {fileID: 3695686850973464159}
   m_Layer: 0
-  m_Name: Mh_Temple_Nike
+  m_Name: Temple_Nike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

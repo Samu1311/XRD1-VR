@@ -161,7 +161,7 @@ public class OracleOfDelphi : MonoBehaviour
         {
             StartRecording();
         }
-        
+
         if (isRecording && Input.GetKeyUp(voiceInputButton))
         {
             StopRecording();
