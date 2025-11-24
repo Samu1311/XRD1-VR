@@ -20,16 +20,14 @@ public class RoomManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-
     public void LoadRoomByName(string roomName)
     {
         StartCoroutine(LoadRoomRoutine(roomName));
     }
 
-
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
     {
-        // --- REMOVE MAIN PORTAL BEFORE TRANSITION ---
+        // --- REMOVE MAIN PORTAL BEFORE LOADING ---
         GameObject mainPortal = GameObject.FindWithTag("MainPortal");
         if (mainPortal != null)
         {
@@ -37,49 +35,42 @@ public class RoomManager : MonoBehaviour
             Debug.Log("Main portal removed before loading new room.");
         }
 
-        // --- LOAD TARGET ROOM ADDITIVELY ---
+        // --- LOAD NEW ROOM ADDITIVELY ---
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
             yield return null;
 
-        // --- UNLOAD PREVIOUS ROOM (EXCEPT MAIN) ---
-        if (!string.IsNullOrEmpty(_currentRoom) &&
-            _currentRoom != "Main")
+        // --- UNLOAD PREVIOUS ROOM (BUT NOT MAIN) ---
+        if (!string.IsNullOrEmpty(_currentRoom) && _currentRoom != "Main")
         {
             SceneManager.UnloadSceneAsync(_currentRoom);
         }
 
         _currentRoom = roomName;
 
-        yield return null; // wait for objects to spawn
+        // Wait one frame so scene objects spawn
+        yield return null;
 
-
-        // --- FIND THE SPAWN POINT ---
+        // --- FIND PLAYER SPAWN POINT ---
         GameObject spawn = GameObject.FindWithTag("PlayerSpawn");
-
         if (spawn == null)
         {
             Debug.LogWarning($"No PlayerSpawn found in scene '{roomName}'!");
-            LoadingScreenManager.Instance.Hide();
             yield break;
         }
 
-        // --- FIND THE XR ORIGIN ---
+        // --- FIND XR RIG ---
         XROrigin rig = FindObjectOfType<XROrigin>();
         if (rig == null)
         {
-            Debug.LogError("No XROrigin found in persistent scene!");
-            LoadingScreenManager.Instance.Hide();
+            Debug.LogError("No XROrigin found in the persistent scene!");
             yield break;
         }
 
-        // --- TELEPORT THE PLAYER ---
+        // --- TELEPORT XR RIG ---
         rig.MoveCameraToWorldLocation(spawn.transform.position);
         rig.transform.rotation = spawn.transform.rotation;
 
         Debug.Log($"Player moved to spawn point in: {roomName}");
-
-        // --- HIDE LOADING SCREEN ---
-        LoadingScreenManager.Instance.Hide();
     }
 }
