@@ -1,54 +1,88 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables; // <-- add this
 
-/// <summary>
-/// Handles snapping and correctness for a single rotating calendar ring.
-/// Attach this to the ring GameObject that has XRGrabInteractable + Rigidbody.
-/// </summary>
-[RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
+[RequireComponent(typeof(XRGrabInteractable))]
 [RequireComponent(typeof(Rigidbody))]
 public class CalendarRing : MonoBehaviour
 {
     public enum RotationAxis { X, Y, Z }
 
     [Header("Rotation Settings")]
-    [Tooltip("How many discrete positions this ring can snap to (e.g. 12 -> every 30 degrees).")]
-    public int steps = 12;
-
-    [Tooltip("Index of the correct step (0..steps-1).")]
+    public int steps = 8;
     public int correctStepIndex = 0;
-
-    [Tooltip("Which local axis this ring rotates around.")]
     public RotationAxis rotationAxis = RotationAxis.Z;
 
     [Header("Events")]
-    [Tooltip("Called whenever this ring becomes correct or incorrect.")]
     public UnityEvent<bool> OnCorrectStateChanged;
 
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable _grab;
+    private XRGrabInteractable _grab;
     private bool _isCorrect;
+    private bool _isGrabbed;
+
     private Vector3 _baseEuler;
+    private Vector3 _baseLocalPosition;
 
     public bool IsCorrect => _isCorrect;
 
     private void Awake()
     {
-        _grab = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        _grab = GetComponent<XRGrabInteractable>();
         _baseEuler = transform.localEulerAngles;
+        _baseLocalPosition = transform.localPosition;
 
+        _grab.selectEntered.AddListener(OnGrabStarted);
         _grab.selectExited.AddListener(OnGrabReleased);
     }
 
     private void OnDestroy()
     {
         if (_grab != null)
+        {
+            _grab.selectEntered.RemoveListener(OnGrabStarted);
             _grab.selectExited.RemoveListener(OnGrabReleased);
+        }
+    }
+
+    private void OnGrabStarted(SelectEnterEventArgs args)
+    {
+        _isGrabbed = true;
     }
 
     private void OnGrabReleased(SelectExitEventArgs args)
     {
+        _isGrabbed = false;
         SnapToNearestStep();
+    }
+
+    private void LateUpdate()
+    {
+        if (!_isGrabbed) return;
+
+        // Keep ring fixed on the wall
+        transform.localPosition = _baseLocalPosition;
+
+        // Lock other axes so it behaves like a wheel
+        var e = transform.localEulerAngles;
+
+        switch (rotationAxis)
+        {
+            case RotationAxis.X:
+                e.y = _baseEuler.y;
+                e.z = _baseEuler.z;
+                break;
+            case RotationAxis.Y:
+                e.x = _baseEuler.x;
+                e.z = _baseEuler.z;
+                break;
+            case RotationAxis.Z:
+                e.x = _baseEuler.x;
+                e.y = _baseEuler.y;
+                break;
+        }
+
+        transform.localRotation = Quaternion.Euler(e);
     }
 
     private void SnapToNearestStep()
