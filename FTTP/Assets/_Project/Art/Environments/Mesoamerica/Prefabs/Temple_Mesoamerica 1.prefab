@@ -262,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8a38c819b9a8ef74fa2e1171d14ff4ef, type: 2}
     - target: {fileID: 919132149155446097, guid: f160d43a8e117814db06e310971a4872, type: 3}
       propertyPath: m_Name
-      value: Temple_Mesoamerica
+      value: finishedenvironment
       objectReference: {fileID: 0}
     - target: {fileID: 1133168925949710677, guid: f160d43a8e117814db06e310971a4872, type: 3}
       propertyPath: m_Materials.Array.data[0]
