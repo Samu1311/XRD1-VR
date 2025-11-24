@@ -1,24 +1,14 @@
-// Uncomment to enable desktop testing with mouse/keyboard
-#define ENABLE_DESKTOP_TESTING
-
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-#if ENABLE_DESKTOP_TESTING
-using UnityEngine.InputSystem;
-#endif
 
 /// <summary>
 /// Oracle of Delphi dialogue system with voice/button input for prophetic questions.
 /// Attach to the Oracle character.
 /// </summary>
-#if ENABLE_DESKTOP_TESTING
-public class OracleOfDelphi : MonoBehaviour, IInteractable
-#else
 public class OracleOfDelphi : MonoBehaviour
-#endif
 {
     [System.Serializable]
     public class PredefinedQuestion
@@ -142,71 +132,8 @@ public class OracleOfDelphi : MonoBehaviour
 
     private void Update()
     {
-#if ENABLE_DESKTOP_TESTING
-        var keyboard = Keyboard.current;
-
-        if (keyboard != null)
-        {
-            // Desktop testing: Number keys 1-5 to select questions quickly
-            if (!isProcessingQuestion && questionMenu != null && questionMenu.activeSelf)
-            {
-                if (keyboard.digit1Key.wasPressedThisFrame) OnQuestionSelected(0);
-                if (keyboard.digit2Key.wasPressedThisFrame) OnQuestionSelected(1);
-                if (keyboard.digit3Key.wasPressedThisFrame) OnQuestionSelected(2);
-                if (keyboard.digit4Key.wasPressedThisFrame) OnQuestionSelected(3);
-                if (keyboard.digit5Key.wasPressedThisFrame) OnQuestionSelected(4);
-            }
-
-            // ESC to close menu
-            if (keyboard.escapeKey.wasPressedThisFrame && questionMenu != null && questionMenu.activeSelf && !isProcessingQuestion)
-            {
-                questionMenu.SetActive(false);
-                Debug.Log("[Desktop Test] Oracle menu closed with ESC");
-            }
-        }
-#endif
-
         CheckPlayerProximity();
         CheckVoiceInputButton();
-    }
-
-    // IInteractable implementation
-    public void OnHoverEnter()
-    {
-#if ENABLE_DESKTOP_TESTING
-        if (oracleLight != null)
-        {
-            oracleLight.enabled = true;
-            oracleLight.color = new Color(0.5f, 0.8f, 1f, 1f);
-        }
-#endif
-    }
-
-    public void OnHoverExit()
-    {
-#if ENABLE_DESKTOP_TESTING
-        if (oracleLight != null)
-        {
-            oracleLight.enabled = false;
-        }
-#endif
-    }
-
-    public void OnInteract()
-    {
-#if ENABLE_DESKTOP_TESTING
-        if (!isProcessingQuestion && questionMenu != null)
-        {
-            bool newState = !questionMenu.activeSelf;
-            questionMenu.SetActive(newState);
-            Debug.Log($"[Desktop Test] Oracle menu {(newState ? "opened" : "closed")}. Press 1-5 to select questions.");
-        }
-#endif
-    }
-
-    public string GetInteractionPrompt()
-    {
-        return "Ask the Oracle";
     }
 
     private void CheckPlayerProximity()
@@ -229,24 +156,6 @@ public class OracleOfDelphi : MonoBehaviour
     {
         if (!useVoiceInput || isProcessingQuestion) return;
 
-#if ENABLE_DESKTOP_TESTING
-        var keyboard = Keyboard.current;
-        if (keyboard != null)
-        {
-            // Desktop testing: Hold V key to "record" voice question
-            if (keyboard.vKey.wasPressedThisFrame)
-            {
-                Debug.Log("[Desktop Test] Hold V to ask question, release to submit");
-                StartRecording();
-            }
-
-            if (isRecording && keyboard.vKey.wasReleasedThisFrame)
-            {
-                Debug.Log("[Desktop Test] Voice question submitted!");
-                StopRecording();
-            }
-        }
-#else
         // Check if voice input button is pressed
         if (Input.GetKeyDown(voiceInputButton))
         {
@@ -257,7 +166,6 @@ public class OracleOfDelphi : MonoBehaviour
         {
             StopRecording();
         }
-#endif
 
         // Auto-stop after max recording time
         if (isRecording && Time.time - recordingStartTime > maxRecordingTime)
