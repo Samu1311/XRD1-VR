@@ -973,8 +973,8 @@ GameObject:
   m_Component:
   - component: {fileID: 974838828}
   m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
+  m_Name: SpawnPoint_Mesoamerica
+  m_TagString: PlayerSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -988,7 +988,7 @@ Transform:
   m_GameObject: {fileID: 974838827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.352, y: 4.259, z: 2.847}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1172,6 +1172,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 986108415}
     m_Modifications:
+    - target: {fileID: 2590630185691207139, guid: f831088079cf11e4b8d07a59b14d0126, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2590630185691207139, guid: f831088079cf11e4b8d07a59b14d0126, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2590630185691207139, guid: f831088079cf11e4b8d07a59b14d0126, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2590630185691207139, guid: f831088079cf11e4b8d07a59b14d0126, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
