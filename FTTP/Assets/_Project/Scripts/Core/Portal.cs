@@ -1,18 +1,26 @@
-using System.Diagnostics;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    [Header("Name of scene in Build Settings")]
     public string targetRoomName;
+
+    [Header("Message shown on the loading screen")]
+    [TextArea]
+    public string loadingMessage = "Traveling...";
 
     private void OnTriggerEnter(Collider other)
     {
-        UnityEngine.Debug.Log("Something entered portal: " + other.name);
+        // Check only for the XR Rig
+        if (!other.CompareTag("Player"))
+            return;
 
-        if (other.CompareTag("Player"))
-        {
-            UnityEngine.Debug.Log("Player detected, loading room: " + targetRoomName);
-            RoomManager.Instance.LoadRoomByName(targetRoomName);
-        }
+        Debug.Log($"Player entered portal - Loading room {targetRoomName}");
+
+        // Show loading screen with custom text
+        LoadingScreenManager.Instance.Show(loadingMessage);
+
+        // Trigger room transition
+        RoomManager.Instance.LoadRoomByName(targetRoomName);
     }
 }
