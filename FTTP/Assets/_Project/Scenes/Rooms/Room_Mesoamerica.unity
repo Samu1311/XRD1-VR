@@ -882,7 +882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5418073551007736421, guid: a4babf6495f63f042ada9ae420d78c8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: 0.056
       objectReference: {fileID: 0}
     - target: {fileID: 5418073551007736421, guid: a4babf6495f63f042ada9ae420d78c8a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1987,6 +1987,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e3bf3477a2cd8408592057bb8934e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1464777417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6233971770069058233, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
+  m_PrefabInstance: {fileID: 3932535212272169601}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1464777418
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464777417}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7870243168582585958, guid: f160d43a8e117814db06e310971a4872, type: 3}
 --- !u!64 &1469006187
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2570,6 +2597,7 @@ PrefabInstance:
     - {fileID: 4038114616285739821, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
     - {fileID: 3203904244740003998, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
     - {fileID: 469766779454873109, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
+    - {fileID: 6147313050720164902, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2597,6 +2625,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1712831051518202276, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3932535212272169613}
+    - targetCorrespondingSourceObject: {fileID: 6233971770069058233, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1464777418}
     - targetCorrespondingSourceObject: {fileID: 4663826825682808125, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3932535212272169612}
