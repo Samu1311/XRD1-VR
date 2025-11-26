@@ -3254,7 +3254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3055e92efa0e5c47aa97fcba3ccd43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRoomName: Room_Main
+  targetRoomName: Room_Egypt
 --- !u!4 &2590630186590159120 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 685580955781083444, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
