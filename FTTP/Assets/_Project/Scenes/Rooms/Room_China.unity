@@ -20886,7 +20886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8570256662994153651, guid: 3ec36dbb3d371684590d464915fafde2, type: 3}
       propertyPath: targetRoomName
-      value: Room_Egypt
+      value: Room_Mesoamerica
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20921,7 +20921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3055e92efa0e5c47aa97fcba3ccd43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRoomName: Room_Egypt
+  targetRoomName: Room_Mesoamerica
 --- !u!1 &672846512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3152435818225156287, guid: 3ec36dbb3d371684590d464915fafde2, type: 3}

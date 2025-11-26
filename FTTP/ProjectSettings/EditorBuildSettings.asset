@@ -17,6 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Rooms/Room_Mesoamerica.unity
     guid: a6152aeb55416844695a81c5f917b548
+  - enabled: 1
     path: Assets/_Project/Scenes/Rooms/Room_China.unity
     guid: 4630a8a12e9fa6b43b1b63cbc2ca3b97
   m_configObjects:
