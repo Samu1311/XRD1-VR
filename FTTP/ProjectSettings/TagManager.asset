@@ -13,15 +13,15 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Stickable
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - Bow
+  - Suimono_Water
+  - Suimono_Depth
+  - Suimono_Screen
+  - Arrow
   - 
   - 
   - 
