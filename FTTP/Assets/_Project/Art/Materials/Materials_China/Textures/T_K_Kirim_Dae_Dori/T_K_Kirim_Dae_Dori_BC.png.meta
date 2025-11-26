@@ -1,9 +1,13 @@
 fileFormatVersion: 2
-guid: 2a16b9d9b24318f4d8b07372f7a421c0
+<<<<<<<< HEAD:FTTP/Assets/_Project/Art/Materials/Materials_China/Textures/T_K_Kirim_Dae_Dori/T_K_Kirim_Dae_Dori_BC.png.meta
+guid: 18ff75f80fdaf044f8d3fb521687e52d
+========
+guid: 05631c9e21da05e40a7c879420c87f89
+>>>>>>>> origin/greece:FTTP/Assets/_Project/Art/Imported Assets/Parthenon/Textures/Tex_Brick_Dirty/ParthenonWall_Dirty_Metallic.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 13
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1

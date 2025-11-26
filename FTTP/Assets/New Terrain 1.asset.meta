@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 59c6ebd2a91ccbb47834cc4abc77ad65
+<<<<<<<< HEAD:FTTP/Assets/New Terrain 1.asset.meta
+guid: 9717a14babb8b61438ff0183035329a9
+========
+guid: bdb1ff0e64efe6c49832d2c89c99aad4
+>>>>>>>> origin/greece:FTTP/Assets/GreekTerrainData4.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 15600000

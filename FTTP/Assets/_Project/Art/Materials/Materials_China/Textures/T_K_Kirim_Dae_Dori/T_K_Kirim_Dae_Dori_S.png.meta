@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 6c8baaddaa00487458ce4fad4f0440c9
+<<<<<<<< HEAD:FTTP/Assets/_Project/Art/Materials/Materials_China/Textures/T_K_Kirim_Dae_Dori/T_K_Kirim_Dae_Dori_S.png.meta
+guid: 7cd9cd4404c02d946a7095a1028e6b16
+========
+guid: 10e12d43784100447aea057f31b9dd25
+>>>>>>>> origin/greece:FTTP/Assets/_Project/Art/Imported Assets/Glowing Rifts/Archery Target/Textures/Leather_Normal.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -54,7 +58,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 1
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -69,6 +73,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
+<<<<<<<< HEAD:FTTP/Assets/_Project/Art/Materials/Materials_China/Textures/T_K_Kirim_Dae_Dori/T_K_Kirim_Dae_Dori_S.png.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -83,6 +88,9 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
+========
+    maxTextureSize: 512
+>>>>>>>> origin/greece:FTTP/Assets/_Project/Art/Imported Assets/Glowing Rifts/Archery Target/Textures/Leather_Normal.png.meta
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
