@@ -4,32 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 55daccc09a3b69647bbab145b54a3ab3
-  - enabled: 1
-    path: Assets/_Project/Scenes/Core/Main.unity
-    guid: 6244f0e0b951f864d8888bf1167c5590
-  - enabled: 1
-    path: Assets/_Project/Scenes/Rooms/Room_Egypt.unity
-    guid: c266c7f4bad3c3543b387aabf596d5b9
-  - enabled: 1
-<<<<<<< HEAD
-    path: Assets/_Project/Scenes/Rooms/Room_Greece.unity
-    guid: 785d0cbc3da0adc4c9543ec15187208e
-=======
-    path: Assets/_Project/Scenes/Rooms/Room_Mesoamerica.unity
-    guid: a6152aeb55416844695a81c5f917b548
-  - enabled: 1
-    path: Assets/_Project/Scenes/Rooms/Room_China.unity
-    guid: 4630a8a12e9fa6b43b1b63cbc2ca3b97
->>>>>>> main-v2
-  m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
-    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
-    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 9bec1ce6a03ccba4b9a8215241b32e63, type: 2}
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: a49cadc1a815591479693b955ccf08c1, type: 2}
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 985fdffee33a5944396199c6b7145dd4, type: 3}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 39616d911e22eb14aaf1852b5fcba814, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 1ee86bb97d5db9a4392bba1a51c6b6bc, type: 2}
+  m_Scenes: []
+  m_configObjects: {}
