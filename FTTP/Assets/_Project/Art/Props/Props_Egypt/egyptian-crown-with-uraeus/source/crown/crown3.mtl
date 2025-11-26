@@ -1,0 +1,34 @@
+# Blender 3.3.1 MTL File: 'Nubian SFmarch 22.blend'
+# www.blender.org
+
+newmtl Crown
+Ka 0.930909 0.930909 0.930909
+Ks 0.254545 0.254545 0.254545
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Crown albedo.png
+map_Ns C:/Crown rough.png
+map_Bump -bm 1.400000 C:/Crown nm.png
+
+newmtl Snake
+Ka 0.767273 0.767273 0.767273
+Ks 0.469091 0.469091 0.469091
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Snake albedo clean c.jpg
+map_Ns C:/Snake rough.png
+map_Bump -bm 1.200000 C:/Snake nm combo punch cleaned.png
+
+newmtl Snake_eyes
+Ka 0.840000 0.840000 0.840000
+Ks 0.587273 0.587273 0.587273
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/Snake eyes albedo.png
+map_Ns C:/Snake eyes rough.png
