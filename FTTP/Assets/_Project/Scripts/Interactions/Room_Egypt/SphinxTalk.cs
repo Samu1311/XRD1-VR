@@ -11,7 +11,10 @@ public class SphinxTalk : MonoBehaviour
     public AudioClip clue3Clip;
     public AudioClip finalClip;
 
-    public Animator animator; 
+    public Animator animator;
+
+    // Track which audio was last played
+    public AudioClip lastClipPlayed;
 
     public void PlayIntro() => PlayClip(introClip);
     public void SayClue1() => PlayClip(clue1Clip);
@@ -22,6 +25,9 @@ public class SphinxTalk : MonoBehaviour
     private void PlayClip(AudioClip clip)
     {
         if (clip == null) return;
+
+        // Remember the clip that is currently being played
+        lastClipPlayed = clip;
 
         // Start talking animation
         if (animator != null)
