@@ -1,433 +1,227 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 
-/// <summary>
-/// Oracle of Delphi dialogue system with voice/button input for prophetic questions.
-/// Attach to the Oracle character.
-/// </summary>
 public class OracleOfDelphi : MonoBehaviour
 {
-    [System.Serializable]
-    public class PredefinedQuestion
-    {
-        public string question;
-        public string[] possibleAnswers;
-    }
-
-    [Header("Dialogue Settings")]
-    [SerializeField] private float thinkingDuration = 2f;
-    [SerializeField] private float answerDisplayDuration = 5f;
+    [Header("Interaction Settings")]
     [SerializeField] private float activationDistance = 3f;
+    [SerializeField] private float thinkingDuration = 2.5f;
+    [SerializeField] private float answerDisplayDuration = 6f;
 
-    [Header("Predefined Questions")]
-    [SerializeField] private List<PredefinedQuestion> questions = new List<PredefinedQuestion>();
+    [Header("Input Settings")]
+    [SerializeField] private float autoAskDelay = 2f;
 
-    [Header("Voice Input Settings")]
-    [SerializeField] private bool useVoiceInput = true;
-    [SerializeField] private KeyCode voiceInputButton = KeyCode.JoystickButton0; // Controller trigger
-    [SerializeField] private float maxRecordingTime = 10f;
 
     [Header("UI References")]
-    [SerializeField] private GameObject dialoguePanel;
-    [SerializeField] private TextMeshProUGUI questionText;
-    [SerializeField] private TextMeshProUGUI oracleResponseText;
-    [SerializeField] private TextMeshProUGUI recordingIndicator;
-    [SerializeField] private GameObject questionMenu;
-    [SerializeField] private Transform questionButtonContainer;
-    [SerializeField] private GameObject questionButtonPrefab;
+    [SerializeField] private GameObject hoverPrompt;
+    [SerializeField] private TextMeshProUGUI hoverText;
+    [SerializeField] private MysticTextPanel dialoguePanel;
+    [SerializeField] private GameObject recordingIndicator;
+    [SerializeField] private GameObject thinkingIndicator;
+
 
     [Header("Oracle Character")]
     [SerializeField] private Animator oracleAnimator;
-    [SerializeField] private Transform playerTransform;
-
-    [Header("Visual Effects")]
-    [SerializeField] private ParticleSystem mysticalEffect;
-    [SerializeField] private Light oracleLight;
-    [SerializeField] private Color thinkingColor = new Color(0.5f, 0f, 1f);
-    [SerializeField] private Color answeringColor = new Color(1f, 0.8f, 0f);
 
     [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip thinkingSound;
     [SerializeField] private AudioClip answerSound;
-    [SerializeField] private AudioClip ambientSound;
 
-    private AudioSource audioSource;
-    private bool isProcessingQuestion = false;
-    private bool isRecording = false;
-    private float recordingStartTime;
-    private Transform xrCamera;
-    private List<GameObject> questionButtons = new List<GameObject>();
+    [Header("Visual Effects")]
+    [SerializeField] private ParticleSystem mysticEffect;
+    [SerializeField] private Light glowLight;
 
-    // Generic prophetic responses
-    private string[] genericResponses;
+    private Transform playerCamera;
+    private bool isProcessing = false;
+    private bool hasAskedQuestion = false;
+    private float closeStartTime;
+
+    // Thematic yes/no responses
+    private string[] yesAnswers = new string[]
+    {
+        "The gods look favourably upon you in this matter.",
+        "Yes, the Fates smile upon your path.",
+        "The omens are clear... it shall be so.",
+        "The divine powers align in your favor.",
+        "I see fortune shining upon your endeavor."
+    };
+
+    private string[] noAnswers = new string[]
+    {
+        "It does not seem so.",
+        "The gods advise caution... I sense misfortune.",
+        "No, the stars warn against this path.",
+        "The Fates have woven a different destiny.",
+        "Alas, the portents are not in your favour."
+    };
+
+    private string[] uncertainAnswers = new string[]
+    {
+        "I'm afraid the stars are unclear on this.",
+        "The future is shrouded in mist... I cannot say.",
+        "The gods remain silent. The answer lies within you.",
+        "The path diverges... both outcomes are possible.",
+        "Ask again when the moon changes its face."
+    };
+
 
     private void Awake()
     {
-        // Initialize generic responses
-        genericResponses = new string[]
-        {
-            "The fates have spoken... Yes, but beware the path ahead.",
-            "The oracle sees uncertainty in your future... Perhaps.",
-            "The gods smile upon your endeavor. Yes.",
-            "The omens are unclear... The answer lies within you.",
-            "No, the gods advise against this course.",
-            "The future is shrouded in mist... Yes, but with great difficulty.",
-            "The oracle sees a favorable outcome.",
-            "The gods remain silent on this matter... Seek wisdom elsewhere.",
-            "Yes, if you prove yourself worthy.",
-            "No, but do not lose hope.",
-            "The path diverges before you... Choose wisely.",
-            "The gods test your resolve... Yes, but not without sacrifice."
-        };
-
-        audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
+            audioSource = GetComponent<AudioSource>();
 
-        // Find XR camera
-        if (playerTransform == null)
-        {
-            var xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
-            if (xrOrigin != null)
-            {
-                xrCamera = xrOrigin.Camera.transform;
-                playerTransform = xrOrigin.transform;
-            }
-        }
+        // Find player camera
+        var xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
+        if (xrOrigin != null)
+            playerCamera = xrOrigin.Camera.transform;
 
-        if (dialoguePanel != null)
-            dialoguePanel.SetActive(false);
+        // Hide UI initially
+        if (hoverPrompt != null) hoverPrompt.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
+        if (recordingIndicator != null) recordingIndicator.SetActive(false);
+        if (thinkingIndicator != null) thinkingIndicator.SetActive(false);
 
-        if (questionMenu != null)
-            questionMenu.SetActive(false);
-
-        if (recordingIndicator != null)
-            recordingIndicator.gameObject.SetActive(false);
-
-        // Initialize predefined questions if empty
-        if (questions.Count == 0)
-        {
-            InitializeDefaultQuestions();
-        }
-
-        // Create question buttons
-        CreateQuestionButtons();
+        // Set hover text
+        if (hoverText != null)
+            hoverText.text = "Get a Reading\n(Ask a yes/no question)";
     }
 
-    private void Start()
-    {
-        // Play ambient sound
-        if (ambientSound != null && audioSource != null)
-        {
-            audioSource.clip = ambientSound;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-    }
+
 
     private void Update()
     {
         CheckPlayerProximity();
-        CheckVoiceInputButton();
+        CheckAutoAsk();
     }
 
     private void CheckPlayerProximity()
     {
-        if (xrCamera == null || isProcessingQuestion) return;
+        if (playerCamera == null || isProcessing) return;
 
-        float distance = Vector3.Distance(transform.position, xrCamera.position);
+        float distance = Vector3.Distance(transform.position, playerCamera.position);
+        bool isClose = distance <= activationDistance;
 
-        if (distance <= activationDistance && !questionMenu.activeSelf && !dialoguePanel.activeSelf)
+        // Show hover prompt when close
+        if (hoverPrompt != null)
         {
-            ShowQuestionMenu(true);
+            if (isClose && !hoverPrompt.activeSelf && !dialoguePanel.gameObject.activeSelf && !hasAskedQuestion)
+            {
+                hoverPrompt.SetActive(true);
+                closeStartTime = Time.time;
+            }
+            else if (!isClose && hoverPrompt.activeSelf)
+            {
+                hoverPrompt.SetActive(false);
+                hasAskedQuestion = false;
+            }
         }
-        else if (distance > activationDistance && questionMenu.activeSelf && !isProcessingQuestion)
+
+        // Make hover prompt face player
+        if (hoverPrompt != null && hoverPrompt.activeSelf)
         {
-            ShowQuestionMenu(false);
+            hoverPrompt.transform.LookAt(playerCamera);
+            hoverPrompt.transform.Rotate(0, 180, 0);
+        }
+    }
+
+    private void CheckAutoAsk()
+    {
+        if (isProcessing || hasAskedQuestion) return;
+        if (hoverPrompt == null || !hoverPrompt.activeSelf) return;
+
+        // Auto-ask question after player is close for a while
+        if (Time.time - closeStartTime > autoAskDelay)
+        {
+            AskQuestion();
         }
     }
 
-    private void CheckVoiceInputButton()
+    private void AskQuestion()
     {
-        if (!useVoiceInput || isProcessingQuestion) return;
+        hasAskedQuestion = true;
 
-        // Check if voice input button is pressed
-        if (Input.GetKeyDown(voiceInputButton))
-        {
-            StartRecording();
-        }
-
-        if (isRecording && Input.GetKeyUp(voiceInputButton))
-        {
-            StopRecording();
-        }
-
-        // Auto-stop after max recording time
-        if (isRecording && Time.time - recordingStartTime > maxRecordingTime)
-        {
-            StopRecording();
-        }
-    }
-    private void StartRecording()
-    {
-        if (Vector3.Distance(transform.position, xrCamera.position) > activationDistance) return;
-
-        isRecording = true;
-        recordingStartTime = Time.time;
-
-        if (recordingIndicator != null)
-        {
-            recordingIndicator.gameObject.SetActive(true);
-            recordingIndicator.text = "Recording... Release to ask Oracle";
-        }
-
-        if (questionMenu != null)
-            questionMenu.SetActive(false);
+        if (hoverPrompt != null) hoverPrompt.SetActive(false);
+        if (recordingIndicator != null) recordingIndicator.SetActive(false);
 
         if (dialoguePanel != null)
         {
-            dialoguePanel.SetActive(true);
-            questionText.text = "Speak your question to the Oracle...";
+            dialoguePanel.gameObject.SetActive(true);
+            dialoguePanel.SetText("What do you most desire to know about the future?");
         }
+
+        // Wait a moment, then give answer
+        StartCoroutine(DelayedResponse());
     }
 
-    private void StopRecording()
+    private IEnumerator DelayedResponse()
     {
-        if (!isRecording) return;
-
-        isRecording = false;
-
-        if (recordingIndicator != null)
-            recordingIndicator.gameObject.SetActive(false);
-
-        // Simulate voice-to-text (in real implementation, use speech recognition)
-        string voiceQuestion = "O Oracle, what does the future hold?"; // Placeholder
-
-        ProcessQuestion(voiceQuestion);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(OracleResponse());
     }
-
-    private void ShowQuestionMenu(bool show)
+    private IEnumerator OracleResponse()
     {
-        if (questionMenu != null)
-            questionMenu.SetActive(show);
-    }
+        isProcessing = true;
 
-    private void CreateQuestionButtons()
-    {
-        if (questionButtonPrefab == null || questionButtonContainer == null) return;
-
-        // Clear existing buttons
-        foreach (var btn in questionButtons)
-        {
-            if (btn != null) Destroy(btn);
-        }
-        questionButtons.Clear();
-
-        // Create button for each predefined question
-        for (int i = 0; i < questions.Count; i++)
-        {
-            GameObject button = Instantiate(questionButtonPrefab, questionButtonContainer);
-
-            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (buttonText != null)
-            {
-                buttonText.text = questions[i].question;
-            }
-
-            // Add click listener
-            int index = i; // Capture for closure
-            var xrButton = button.GetComponent<UnityEngine.UI.Button>();
-            if (xrButton != null)
-            {
-                xrButton.onClick.AddListener(() => OnQuestionSelected(index));
-            }
-
-            questionButtons.Add(button);
-        }
-    }
-
-    public void OnQuestionSelected(int questionIndex)
-    {
-        if (questionIndex < 0 || questionIndex >= questions.Count) return;
-
-        string question = questions[questionIndex].question;
-        ProcessQuestion(question, questionIndex);
-    }
-
-    private void ProcessQuestion(string question, int questionIndex = -1)
-    {
-        if (isProcessingQuestion) return;
-
-        StartCoroutine(OracleResponseSequence(question, questionIndex));
-    }
-
-    private IEnumerator OracleResponseSequence(string question, int questionIndex)
-    {
-        isProcessingQuestion = true;
-
-        // Hide menu, show dialogue
-        if (questionMenu != null)
-            questionMenu.SetActive(false);
-
+        // Oracle is thinking
         if (dialoguePanel != null)
-            dialoguePanel.SetActive(true);
+            dialoguePanel.SetText("The Oracle consults the gods...");
 
-        // Display question
-        if (questionText != null)
-        {
-            questionText.text = $"\"{question}\"";
-        }
+        if (thinkingIndicator != null) thinkingIndicator.SetActive(true);
+        if (mysticEffect != null) mysticEffect.Play();
+        if (glowLight != null) glowLight.intensity = 2f;
 
-        if (oracleResponseText != null)
-        {
-            oracleResponseText.text = "";
-        }
-
-        // Oracle thinking animation
         if (oracleAnimator != null)
-        {
             oracleAnimator.SetTrigger("Think");
-        }
 
-        // Visual effects
-        if (mysticalEffect != null)
-            mysticalEffect.Play();
-
-        if (oracleLight != null)
-            oracleLight.color = thinkingColor;
-
-        // Audio
         if (thinkingSound != null && audioSource != null)
-        {
             audioSource.PlayOneShot(thinkingSound);
-        }
 
-        // Wait (thinking)
+        // Wait while thinking
         yield return new WaitForSeconds(thinkingDuration);
 
-        // Generate answer
-        string answer = GenerateAnswer(questionIndex);
+        // Give answer
+        if (thinkingIndicator != null) thinkingIndicator.SetActive(false);
+
+        string answer = GenerateAnswer();
+        if (dialoguePanel != null)
+            dialoguePanel.SetText(answer);
+
+        if (oracleAnimator != null)
+            oracleAnimator.SetTrigger("Speak");
+
+        if (answerSound != null && audioSource != null)
+            audioSource.PlayOneShot(answerSound);
+
+        if (glowLight != null) glowLight.intensity = 3f;
 
         // Display answer
-        if (oracleResponseText != null)
-        {
-            oracleResponseText.text = answer;
-        }
-
-        // Oracle speaking animation
-        if (oracleAnimator != null)
-        {
-            oracleAnimator.SetTrigger("Speak");
-        }
-
-        if (oracleLight != null)
-            oracleLight.color = answeringColor;
-
-        // Audio
-        if (answerSound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(answerSound);
-        }
-
-        // Keep answer displayed
         yield return new WaitForSeconds(answerDisplayDuration);
 
         // Reset
-        if (mysticalEffect != null)
-            mysticalEffect.Stop();
+        if (mysticEffect != null) mysticEffect.Stop();
+        if (glowLight != null) glowLight.intensity = 1f;
+        if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
 
-        if (dialoguePanel != null)
-            dialoguePanel.SetActive(false);
+        isProcessing = false;
 
-        if (oracleLight != null)
-            oracleLight.color = Color.white;
-
-        isProcessingQuestion = false;
-
-        // Show menu again if player is still close
-        if (Vector3.Distance(transform.position, xrCamera.position) <= activationDistance)
-        {
-            ShowQuestionMenu(true);
-        }
+        // Reset so player can ask again
+        yield return new WaitForSeconds(2f);
+        hasAskedQuestion = false;
     }
-
-    private string GenerateAnswer(int questionIndex)
+    private string GenerateAnswer()
     {
-        // Use predefined answer if available
-        if (questionIndex >= 0 && questionIndex < questions.Count)
-        {
-            var possibleAnswers = questions[questionIndex].possibleAnswers;
-            if (possibleAnswers != null && possibleAnswers.Length > 0)
-            {
-                return possibleAnswers[Random.Range(0, possibleAnswers.Length)];
-            }
-        }
+        // Randomly pick answer type: yes, no, or uncertain
+        int answerType = Random.Range(0, 10);
 
-        // Otherwise use generic response
-        return genericResponses[Random.Range(0, genericResponses.Length)];
-    }
-
-    private void InitializeDefaultQuestions()
-    {
-        questions.Add(new PredefinedQuestion
-        {
-            question = "Will I find success in my endeavors?",
-            possibleAnswers = new string[]
-            {
-                "Yes, if you remain steadfast and true to your purpose.",
-                "The gods see great potential, but the path is perilous.",
-                "Success comes to those who seek wisdom before action."
-            }
-        });
-
-        questions.Add(new PredefinedQuestion
-        {
-            question = "Should I trust those around me?",
-            possibleAnswers = new string[]
-            {
-                "Trust, but verify. Not all who smile are friends.",
-                "The bonds of loyalty are tested in times of trial.",
-                "Look to those who have proven themselves in deed, not word."
-            }
-        });
-
-        questions.Add(new PredefinedQuestion
-        {
-            question = "What do the gods have in store for my future?",
-            possibleAnswers = new string[]
-            {
-                "Great trials await, but also great rewards for the worthy.",
-                "The Fates weave a complex tapestry... Your thread shines bright.",
-                "The gods test mortals to separate heroes from the meek."
-            }
-        });
-
-        questions.Add(new PredefinedQuestion
-        {
-            question = "Will I overcome my current challenges?",
-            possibleAnswers = new string[]
-            {
-                "Yes, but you must call upon your inner strength.",
-                "Victory comes not from avoiding challenges, but facing them.",
-                "The gods favor the brave. Stand firm and you shall prevail."
-            }
-        });
-
-        questions.Add(new PredefinedQuestion
-        {
-            question = "Is now the right time to act?",
-            possibleAnswers = new string[]
-            {
-                "The stars align favorably. Strike while fortune smiles.",
-                "Patience. The moment is not yet ripe.",
-                "Timing is everything. Wait for the next full moon."
-            }
-        });
+        if (answerType < 4) // 40% yes
+            return yesAnswers[Random.Range(0, yesAnswers.Length)];
+        else if (answerType < 7) // 30% no
+            return noAnswers[Random.Range(0, noAnswers.Length)];
+        else // 30% uncertain
+            return uncertainAnswers[Random.Range(0, uncertainAnswers.Length)];
     }
 
     private void OnDrawGizmosSelected()
