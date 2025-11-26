@@ -1,8 +1,24 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<<< HEAD:FTTP/Assets/GreekTerrainData4.asset.meta
 guid: bdb1ff0e64efe6c49832d2c89c99aad4
+========
+guid: 59cc53445321fc9498bf843d75630c01
+>>>>>>>> main-v2:FTTP/Assets/GreekTerrainData2.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 15600000
+  mainObjectFileID: 0
+=======
+<<<<<<<< HEAD:FTTP/Assets/New Terrain 1.asset.meta
+guid: e83eae95d9f1c6f49ab4dd6eccf60075
+========
+guid: bdb1ff0e64efe6c49832d2c89c99aad4
+>>>>>>>> origin/greece:FTTP/Assets/GreekTerrainData4.asset.meta
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 15600000
+>>>>>>> main-v2
   userData: 
   assetBundleName: 
   assetBundleVariant: 

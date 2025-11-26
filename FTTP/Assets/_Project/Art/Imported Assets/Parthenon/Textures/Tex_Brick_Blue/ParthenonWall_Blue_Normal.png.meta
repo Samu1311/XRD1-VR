@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 38a345b2e18076348ae2f6decd7a2a4e
+=======
+<<<<<<<< HEAD:FTTP/Assets/_Project/Art/Materials/Materials_China/Textures/T_K_Kirim_Dae_Dori/T_K_Kirim_Dae_Dori_N.png.meta
+guid: d865ad8d495fb854fb7481b7c54e35b6
+========
+guid: 38a345b2e18076348ae2f6decd7a2a4e
+>>>>>>>> origin/greece:FTTP/Assets/_Project/Art/Imported Assets/Parthenon/Textures/Tex_Brick_Blue/ParthenonWall_Blue_Normal.png.meta
+>>>>>>> main-v2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -74,7 +82,11 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
+<<<<<<< HEAD
     crunchedCompression: 0
+=======
+    crunchedCompression: 1
+>>>>>>> main-v2
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,6 +105,22 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+<<<<<<< HEAD
+=======
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+>>>>>>> main-v2
   spriteSheet:
     serializedVersion: 2
     sprites: []

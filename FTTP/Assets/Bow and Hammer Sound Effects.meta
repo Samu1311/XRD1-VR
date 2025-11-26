@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 3bccf32b58135e3409f5a7ae98d4a39a
+=======
+<<<<<<<< HEAD:FTTP/Assets/Bow and Hammer Sound Effects.meta
+guid: 3bccf32b58135e3409f5a7ae98d4a39a
+========
+guid: de28f8aac193d86499287a01951c20d4
+>>>>>>>> origin/greece:FTTP/Assets/Bitwave_Labs.meta
+>>>>>>> main-v2
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

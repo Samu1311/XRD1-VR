@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: bab8408157757b34fb035cd7a57f051c
+=======
+guid: 6c605407cd6fa244f8ff68955ae4b09f
+>>>>>>> main-v2
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}

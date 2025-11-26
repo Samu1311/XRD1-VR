@@ -4,10 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Anchor
   - PlayerSpawn
   - Weight
   - PlayerHand
+  - Anchor
+  - MainPortal
   layers:
   - Default
   - TransparentFX
@@ -15,12 +16,21 @@ TagManager:
   - Stickable
   - Water
   - UI
+<<<<<<< HEAD
   - Interactable
   - Bow
   - Suimono_Water
   - Suimono_Depth
   - Suimono_Screen
   - Arrow
+=======
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+>>>>>>> main-v2
   - 
   - 
   - 

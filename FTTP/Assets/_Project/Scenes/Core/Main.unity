@@ -394,6 +394,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortalFive
       objectReference: {fileID: 0}
+    - target: {fileID: 8918175083306843877, guid: f546e48c3995d33479c34ed605db241c, type: 3}
+      propertyPath: m_TagString
+      value: MainPortal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -675,8 +679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffd0df2a3f42ea45a1f53ca7c44ce60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSceneNames:
-  - Room_Egypt
 --- !u!1 &1249617917
 GameObject:
   m_ObjectHideFlags: 0
