@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-[RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
+[RequireComponent(typeof(XRGrabInteractable))]
 public class VRBow : MonoBehaviour
 {
     [Header("Bow Configuration")]
@@ -27,7 +28,7 @@ public class VRBow : MonoBehaviour
     [SerializeField] private LineRenderer stringRenderer;
     [SerializeField] private float stringWidth = 0.01f;
 
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
+    private XRGrabInteractable grabInteractable;
     private UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor pullHandInteractor;
     private Arrow currentArrow;
     private float currentPull;
@@ -36,7 +37,8 @@ public class VRBow : MonoBehaviour
 
     private void Awake()
     {
-        grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        grabInteractable = GetComponent<XRGrabInteractable>();
+
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
@@ -46,7 +48,6 @@ public class VRBow : MonoBehaviour
         SetupStringRenderer();
         originalStringPullPosition = stringPullPoint.localPosition;
     }
-
     private void OnEnable()
     {
         grabInteractable.selectEntered.AddListener(OnBowGrabbed);

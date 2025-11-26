@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using System.Collections;
 using TMPro;
 
@@ -38,7 +39,7 @@ public class OracleOfDelphi : MonoBehaviour
     private bool isProcessing = false;
     private bool isRecording = false;
     private float recordStartTime;
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable interactable;
+    private XRSimpleInteractable interactable;
 
     // Thematic yes/no responses
     private string[] yesAnswers = new string[]
@@ -79,19 +80,10 @@ public class OracleOfDelphi : MonoBehaviour
         if (xrOrigin != null)
             playerCamera = xrOrigin.Camera.transform;
 
-        // Get XR interaction component (must be added manually)
-        interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
-        if (interactable != null)
-        {
-            interactable.selectEntered.AddListener(OnOraclePressed);
-            interactable.selectExited.AddListener(OnOracleReleased);
-        }
-        else
-        {
-            Debug.LogWarning("Oracle: XRSimpleInteractable component missing! Add it manually in Inspector.");
-        }
-
-        // Hide UI initially
+        // Get or create XR interaction component
+        interactable = GetComponent<XRSimpleInteractable>();
+        interactable.selectEntered.AddListener(OnOraclePressed);
+        interactable.selectExited.AddListener(OnOracleReleased);        // Hide UI initially
         if (hoverPrompt != null) hoverPrompt.SetActive(false);
         if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
         if (recordingIndicator != null) recordingIndicator.SetActive(false);

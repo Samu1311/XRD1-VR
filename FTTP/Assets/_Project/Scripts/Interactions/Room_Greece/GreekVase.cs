@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
 
 public class GreekVase : MonoBehaviour
@@ -14,18 +15,13 @@ public class GreekVase : MonoBehaviour
     [SerializeField] private float displayDuration = 5f;
     [SerializeField] private Vector3 textOffset = new Vector3(0, 1.5f, 0);
 
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable interactable;
+    private XRSimpleInteractable interactable;
     private GameObject activeTextPanel;
     private float hideTimer;
 
     private void Awake()
     {
-        interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
-        if (interactable == null)
-        {
-            interactable = gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
-        }
-
+        interactable = GetComponent<XRSimpleInteractable>();
         interactable.selectEntered.AddListener(OnVaseClicked);
     }
 
@@ -56,34 +52,61 @@ public class GreekVase : MonoBehaviour
 
     private void ShowText()
     {
-        string mythText = mythDatabase != null ? mythDatabase.GetMythText(mythIndex) : "No myth database assigned.";
+        string mythText = "No myth database assigned.";
+
+        if (mythDatabase != null)
+        {
+            mythText = mythDatabase.GetMythText(mythIndex);
+            Debug.Log($"Vase {gameObject.name}: Got myth text: {mythText}");
+        }
+        else
+        {
+            Debug.LogWarning($"Vase {gameObject.name}: No myth database assigned!");
+        }
 
         if (textPanel != null)
         {
             if (activeTextPanel == null)
             {
-                activeTextPanel = Instantiate(textPanel, transform.position + textOffset, Quaternion.identity);
-                activeTextPanel.transform.SetParent(transform);
-            }
+                // Calculate position above the vase
+                Vector3 spawnPosition = CalculateTextPosition();
 
-            // Try to update the text by using the mystictextpanel first, fallback to direct textmeshpro if not found
-            var mysticPanel = activeTextPanel.GetComponent<MysticTextPanel>();
-            if (mysticPanel != null)
-            {
-                mysticPanel.SetText(mythText);
-            }
-            else if (mythTextUI != null)
-            {
-                mythTextUI.text = mythText;
+                // Calculate rotation to face camera
+                Quaternion faceRotation = CalculateCameraFacingRotation();
+
+                activeTextPanel = Instantiate(textPanel, spawnPosition, faceRotation);
+                activeTextPanel.transform.SetParent(transform);
             }
             else
             {
-                // Get textmeshprogui from children if not assigned
-                var textInChildren = activeTextPanel.GetComponentInChildren<TextMeshProUGUI>();
-                if (textInChildren != null)
-                {
-                    textInChildren.text = mythText;
-                }
+                // Update position and rotation if panel already exists
+                activeTextPanel.transform.position = CalculateTextPosition();
+                activeTextPanel.transform.rotation = CalculateCameraFacingRotation();
+            }
+
+            // Force set the text on ALL possible text components to override any defaults
+
+            // First try MysticTextPanel
+            var mysticPanel = activeTextPanel.GetComponent<MysticTextPanel>();
+            if (mysticPanel != null)
+            {
+                Debug.Log($"Setting text via MysticTextPanel: {mythText}");
+                mysticPanel.SetText(mythText);
+            }
+
+            // Also set on direct TextMeshPro if assigned
+            if (mythTextUI != null)
+            {
+                Debug.Log($"Setting text via mythTextUI: {mythText}");
+                mythTextUI.text = mythText;
+            }
+
+            // Find and set ALL TextMeshPro components in children
+            var allTextComponents = activeTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
+            foreach (var textComponent in allTextComponents)
+            {
+                Debug.Log($"Setting text on component {textComponent.name}: {mythText}");
+                textComponent.text = mythText;
             }
 
             activeTextPanel.SetActive(true);
@@ -91,7 +114,7 @@ public class GreekVase : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Greek Vase: {mythText}");
+            Debug.Log($"Greek Vase {gameObject.name}: {mythText}");
         }
     }
 
@@ -101,5 +124,52 @@ public class GreekVase : MonoBehaviour
         {
             activeTextPanel.SetActive(false);
         }
+    }
+
+    private Vector3 CalculateTextPosition()
+    {
+        // Get the vase's renderer bounds to calculate its height
+        Renderer vaseRenderer = GetComponent<Renderer>();
+        float vaseHeight = 1f; // Default fallback height
+
+        if (vaseRenderer != null)
+        {
+            vaseHeight = vaseRenderer.bounds.size.y;
+        }
+
+        // Position the panel above the vase with some extra margin
+        Vector3 position = transform.position;
+        position.y += vaseHeight + 0.5f; // Add vase height plus extra margin
+
+        return position;
+    }
+
+    private Quaternion CalculateCameraFacingRotation()
+    {
+        // Find the player camera
+        Camera playerCamera = Camera.main;
+
+        // Try to find XR camera if main camera is not found
+        if (playerCamera == null)
+        {
+            var xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
+            if (xrOrigin != null)
+            {
+                playerCamera = xrOrigin.Camera;
+            }
+        }
+
+        if (playerCamera != null)
+        {
+            // Calculate direction from panel to camera
+            Vector3 directionToCamera = playerCamera.transform.position - transform.position;
+            directionToCamera.y = 0; // Keep panel upright, only rotate horizontally
+
+            // Return rotation that faces the camera
+            return Quaternion.LookRotation(directionToCamera);
+        }
+
+        // Fallback: face forward
+        return Quaternion.identity;
     }
 }

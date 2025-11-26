@@ -1,19 +1,36 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-[RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
+[RequireComponent(typeof(XRGrabInteractable))]
 public class BowStringGrabbable : MonoBehaviour
 {
     [SerializeField] private VRBow bowController;
 
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
+    private XRGrabInteractable grabInteractable;
 
     private void Awake()
     {
-        grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        grabInteractable = GetComponent<XRGrabInteractable>();
+
+        // Auto-configure XR interaction setup
+        if (grabInteractable.colliders.Count == 0)
+        {
+            var collider = GetComponent<Collider>();
+            if (collider != null)
+            {
+                grabInteractable.colliders.Add(collider);
+            }
+        }
+
+        // Auto-assign interaction manager if not set
+        if (grabInteractable.interactionManager == null)
+        {
+            grabInteractable.interactionManager = FindObjectOfType<XRInteractionManager>();
+        }
 
         // Configure the grab interactable for string pulling
-        grabInteractable.movementType = UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable.MovementType.Kinematic;
+        grabInteractable.movementType = XRBaseInteractable.MovementType.Kinematic;
         grabInteractable.trackPosition = true;
         grabInteractable.trackRotation = false;
     }
