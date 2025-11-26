@@ -1,5 +1,17 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<<< HEAD:FTTP/Assets/HDRPDefaultResources/HDRenderPipelineGlobalSettings.asset.meta
 guid: 6c141d8457447b0499ed6c4516a0736a
+========
+guid: 59c6ebd2a91ccbb47834cc4abc77ad65
+>>>>>>>> origin/greece:FTTP/Assets/New Terrain 1.asset.meta
+=======
+<<<<<<< HEAD
+guid: 56a8b42bcf20b2b49a9340e5a0ececbe
+=======
+guid: 6c141d8457447b0499ed6c4516a0736a
+>>>>>>> main-v2
+>>>>>>> origin/greece
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
