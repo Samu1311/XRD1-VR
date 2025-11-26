@@ -1064,6 +1064,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlayerHand
       objectReference: {fileID: 0}
+    - target: {fileID: 5261372369291190374, guid: 68f0d0f936635e348943945a8456e8fa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5601937352548389076, guid: 68f0d0f936635e348943945a8456e8fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -7,11 +7,11 @@ public class OracleOfDelphi : MonoBehaviour
 {
     [Header("Interaction Settings")]
     [SerializeField] private float activationDistance = 3f;
-    [SerializeField] private float thinkingDuration = 2.5f;
     [SerializeField] private float answerDisplayDuration = 6f;
 
     [Header("Input Settings")]
-    [SerializeField] private float autoAskDelay = 2f;
+    [SerializeField] private float holdDuration = 2f;
+    [SerializeField] private float thinkingTime = 3f;
 
 
     [Header("UI References")]
@@ -36,8 +36,9 @@ public class OracleOfDelphi : MonoBehaviour
 
     private Transform playerCamera;
     private bool isProcessing = false;
-    private bool hasAskedQuestion = false;
-    private float closeStartTime;
+    private bool isRecording = false;
+    private float recordStartTime;
+    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable interactable;
 
     // Thematic yes/no responses
     private string[] yesAnswers = new string[]
@@ -78,6 +79,18 @@ public class OracleOfDelphi : MonoBehaviour
         if (xrOrigin != null)
             playerCamera = xrOrigin.Camera.transform;
 
+        // Get XR interaction component (must be added manually)
+        interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        if (interactable != null)
+        {
+            interactable.selectEntered.AddListener(OnOraclePressed);
+            interactable.selectExited.AddListener(OnOracleReleased);
+        }
+        else
+        {
+            Debug.LogWarning("Oracle: XRSimpleInteractable component missing! Add it manually in Inspector.");
+        }
+
         // Hide UI initially
         if (hoverPrompt != null) hoverPrompt.SetActive(false);
         if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
@@ -86,7 +99,7 @@ public class OracleOfDelphi : MonoBehaviour
 
         // Set hover text
         if (hoverText != null)
-            hoverText.text = "Get a Reading\n(Ask a yes/no question)";
+            hoverText.text = "Hold to Ask Oracle\n(Ask a yes/no question)";
     }
 
 
@@ -94,7 +107,7 @@ public class OracleOfDelphi : MonoBehaviour
     private void Update()
     {
         CheckPlayerProximity();
-        CheckAutoAsk();
+        HandleRecording();
     }
 
     private void CheckPlayerProximity()
@@ -107,15 +120,13 @@ public class OracleOfDelphi : MonoBehaviour
         // Show hover prompt when close
         if (hoverPrompt != null)
         {
-            if (isClose && !hoverPrompt.activeSelf && !dialoguePanel.gameObject.activeSelf && !hasAskedQuestion)
+            if (isClose && !hoverPrompt.activeSelf && !dialoguePanel.gameObject.activeSelf)
             {
                 hoverPrompt.SetActive(true);
-                closeStartTime = Time.time;
             }
             else if (!isClose && hoverPrompt.activeSelf)
             {
                 hoverPrompt.SetActive(false);
-                hasAskedQuestion = false;
             }
         }
 
@@ -127,40 +138,78 @@ public class OracleOfDelphi : MonoBehaviour
         }
     }
 
-    private void CheckAutoAsk()
+    private void HandleRecording()
     {
-        if (isProcessing || hasAskedQuestion) return;
-        if (hoverPrompt == null || !hoverPrompt.activeSelf) return;
-
-        // Auto-ask question after player is close for a while
-        if (Time.time - closeStartTime > autoAskDelay)
+        if (isRecording)
         {
-            AskQuestion();
+            float recordTime = Time.time - recordStartTime;
+
+            // Update recording UI
+            if (dialoguePanel != null)
+            {
+                float remaining = holdDuration - recordTime;
+                dialoguePanel.SetText($"Speak your question to the Oracle...\n({remaining:F1}s remaining)");
+            }
+
+            // Check if recording is complete
+            if (recordTime >= holdDuration)
+            {
+                CompleteRecording();
+            }
         }
     }
 
-    private void AskQuestion()
+    private void OnOraclePressed(SelectEnterEventArgs args)
     {
-        hasAskedQuestion = true;
+        if (isProcessing || isRecording) return;
+
+        StartRecording();
+    }
+
+    private void OnOracleReleased(SelectExitEventArgs args)
+    {
+        if (isRecording && Time.time - recordStartTime < holdDuration)
+        {
+            CancelRecording();
+        }
+    }
+
+    private void StartRecording()
+    {
+        isRecording = true;
+        recordStartTime = Time.time;
 
         if (hoverPrompt != null) hoverPrompt.SetActive(false);
-        if (recordingIndicator != null) recordingIndicator.SetActive(false);
+        if (recordingIndicator != null) recordingIndicator.SetActive(true);
 
         if (dialoguePanel != null)
         {
             dialoguePanel.gameObject.SetActive(true);
-            dialoguePanel.SetText("What do you most desire to know about the future?");
+            dialoguePanel.SetText($"Speak your question to the Oracle...\n({holdDuration:F1}s remaining)");
         }
-
-        // Wait a moment, then give answer
-        StartCoroutine(DelayedResponse());
     }
 
-    private IEnumerator DelayedResponse()
+    private void CompleteRecording()
     {
-        yield return new WaitForSeconds(1f);
+        isRecording = false;
+
+        if (recordingIndicator != null) recordingIndicator.SetActive(false);
+
+        if (dialoguePanel != null)
+            dialoguePanel.SetText("The Oracle has heard your question...");
+
         StartCoroutine(OracleResponse());
     }
+
+    private void CancelRecording()
+    {
+        isRecording = false;
+
+        if (recordingIndicator != null) recordingIndicator.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
+    }
+
+
     private IEnumerator OracleResponse()
     {
         isProcessing = true;
@@ -180,7 +229,7 @@ public class OracleOfDelphi : MonoBehaviour
             audioSource.PlayOneShot(thinkingSound);
 
         // Wait while thinking
-        yield return new WaitForSeconds(thinkingDuration);
+        yield return new WaitForSeconds(thinkingTime);
 
         // Give answer
         if (thinkingIndicator != null) thinkingIndicator.SetActive(false);
@@ -206,10 +255,6 @@ public class OracleOfDelphi : MonoBehaviour
         if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
 
         isProcessing = false;
-
-        // Reset so player can ask again
-        yield return new WaitForSeconds(2f);
-        hasAskedQuestion = false;
     }
     private string GenerateAnswer()
     {
