@@ -1,17 +1,10 @@
-using Unity.XR.CoreUtils;  // Needed for XROrigin
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Handles loading/unloading room scenes additively.
-/// Keeps one persistent XR rig and teleports it to spawn points in rooms.
-/// </summary>
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
-
-    [Header("Add your room scene names here EXACTLY as in Build Settings")]
-    [SerializeField] private string[] roomSceneNames;
 
     private string _currentRoom;
 
@@ -27,73 +20,57 @@ public class RoomManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-
-    /// <summary>
-    /// Loads a room by index from the array.
-    /// </summary>
-    public void LoadRoom(int index)
-    {
-        if (index < 0 || index >= roomSceneNames.Length)
-        {
-            Debug.LogError("Room index out of range!");
-            return;
-        }
-
-        LoadRoomByName(roomSceneNames[index]);
-    }
-
-
-    /// <summary>
-    /// Loads a room scene by name, unloads the previous room,
-    /// and moves the XR Rig to the PlayerSpawnPoint.
-    /// </summary>
     public void LoadRoomByName(string roomName)
     {
         StartCoroutine(LoadRoomRoutine(roomName));
     }
 
-
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
     {
-        // Load the scene additively
+        // --- REMOVE MAIN PORTAL BEFORE LOADING ---
+        GameObject mainPortal = GameObject.FindWithTag("MainPortal");
+        if (mainPortal != null)
+        {
+            Destroy(mainPortal);
+            Debug.Log("Main portal removed before loading new room.");
+        }
+
+        // --- LOAD NEW ROOM ADDITIVELY ---
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
             yield return null;
 
-
-        // Unload previous room (but NOT Main)
-        if (!string.IsNullOrEmpty(_currentRoom))
+        // --- UNLOAD PREVIOUS ROOM (BUT NOT MAIN) ---
+        if (!string.IsNullOrEmpty(_currentRoom) && _currentRoom != "Main")
         {
-            if (_currentRoom != "Main")
-                SceneManager.UnloadSceneAsync(_currentRoom);
+            SceneManager.UnloadSceneAsync(_currentRoom);
         }
 
         _currentRoom = roomName;
 
+        // Wait one frame so scene objects spawn
+        yield return null;
 
-        // --- MOVE PLAYER TO SPAWN POINT ---
-        yield return null; // Wait one frame so objects spawn
-
+        // --- FIND PLAYER SPAWN POINT ---
         GameObject spawn = GameObject.FindWithTag("PlayerSpawn");
-
         if (spawn == null)
         {
-            Debug.LogWarning($"No PlayerSpawnPoint found in scene '{roomName}'. Add an object tagged PlayerSpawn.");
+            Debug.LogWarning($"No PlayerSpawn found in scene '{roomName}'!");
             yield break;
         }
 
+        // --- FIND XR RIG ---
         XROrigin rig = FindObjectOfType<XROrigin>();
-
         if (rig == null)
         {
-            Debug.LogError("No XR Origin found in the persistent Main scene!");
+            Debug.LogError("No XROrigin found in the persistent scene!");
             yield break;
         }
 
-        // Move the XR rig to the room's spawn location
+        // --- TELEPORT XR RIG ---
         rig.MoveCameraToWorldLocation(spawn.transform.position);
         rig.transform.rotation = spawn.transform.rotation;
 
-        Debug.Log($"Player moved to spawn point in room: {roomName}");
+        Debug.Log($"Player moved to spawn point in: {roomName}");
     }
 }
