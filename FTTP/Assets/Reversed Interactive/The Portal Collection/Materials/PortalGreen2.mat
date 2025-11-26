@@ -311,12 +311,7 @@ MonoBehaviour:
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
     m_Values: 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/greece
---- !u!114 &5970090129702473681
+--- !u!114 &3207223319756326408
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,7 +324,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 7
-<<<<<<< HEAD
-=======
->>>>>>> main-v2
->>>>>>> origin/greece
