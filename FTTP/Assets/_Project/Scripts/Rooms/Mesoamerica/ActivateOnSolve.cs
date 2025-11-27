@@ -1,12 +1,29 @@
+using System.Diagnostics;
 using UnityEngine;
 
-public class ActivateOnSolve : MonoBehaviour
+public class ActivateAndMovePortal : MonoBehaviour
 {
-    public GameObject target;
+    [Header("Portal Object")]
+    public GameObject portal;
 
-    public void Activate()
+    [Header("New Position For Portal")]
+    public Transform newLocation;
+
+    public void ActivatePortal()
     {
-        if (target != null)
-            target.SetActive(true);
+        if (portal == null || newLocation == null)
+        {
+            return;
+        }
+
+        // Activate the portal
+        portal.SetActive(true);
+
+        // Move the portal to the new location
+        portal.transform.position = newLocation.position;
+
+        // If you also want the rotation to match:
+        portal.transform.rotation = newLocation.rotation;
+
     }
 }

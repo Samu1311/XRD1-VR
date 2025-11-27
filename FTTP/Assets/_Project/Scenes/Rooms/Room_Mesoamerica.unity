@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &92213260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92213261}
+  m_Layer: 0
+  m_Name: PortalSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &92213261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92213260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66, y: 1.18, z: -0.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1775208173}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &235633817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,7 +1928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef27bf0fa3c1084c9befec0eab13791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1919123061}
+  portalAnimator: {fileID: 0}
 --- !u!1 &905740797
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,7 +2156,7 @@ Transform:
   m_GameObject: {fileID: 974838827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.851, y: 3.926, z: -2.901}
+  m_LocalPosition: {x: 5.859, y: 3.387, z: -3.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2228,19 +2259,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2056778816}
+        m_TargetAssemblyTypeName: PortalActivate, Assembly-CSharp
+        m_MethodName: ActivatePortal
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &1112306784
 GameObject:
@@ -2349,37 +2380,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112306784}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1124910846
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1124910847}
-  m_Layer: 0
-  m_Name: PortalExit
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1124910847
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124910846}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.76072, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1239944280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3053,6 +3053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1775208173}
+  - component: {fileID: 1775208174}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -3077,8 +3078,22 @@ Transform:
   - {fileID: 986108415}
   - {fileID: 974838828}
   - {fileID: 2056778811}
+  - {fileID: 92213261}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1775208174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775208172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef27bf0fa3c1084c9befec0eab13791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portalAnimator: {fileID: 0}
 --- !u!64 &1780347201
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3169,23 +3184,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 509793321306632359, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 851830702143757975, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_Convex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 889732504635402781, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 889732504635402781, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 889732504635402781, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 889732504635402781, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.16
+      value: -1.99
       objectReference: {fileID: 0}
     - target: {fileID: 889732504635402781, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3223,6 +3242,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4521426247087400414, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5887148599346701520, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6249878429243699095, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3230,9 +3261,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 509793321306632359, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2056778815}
+    - targetCorrespondingSourceObject: {fileID: 509793321306632359, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2056778816}
     - targetCorrespondingSourceObject: {fileID: 5887148599346701520, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2056778814}
+    - targetCorrespondingSourceObject: {fileID: 5887148599346701520, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2056778817}
   m_SourcePrefab: {fileID: 100100000, guid: 7babc7f190d5bc3438611fc3ba4af654, type: 3}
 --- !u!4 &2056778811 stripped
 Transform:
@@ -3262,7 +3299,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRoomName: Room_Egypt
---- !u!114 &2056778815
+--- !u!95 &2056778815
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056778812}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9fb64950cf2c1bc49bf5157e76bd0cf8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2056778816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3274,7 +3332,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef27bf0fa3c1084c9befec0eab13791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2056778812}
+  portalAnimator: {fileID: 2056778815}
+--- !u!64 &2056778817
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056778813}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6239881831769578202, guid: b8de3464b3183fc4fa88e75cd21936b4, type: 3}
 --- !u!4 &2590630186590159120 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 685580955781083444, guid: 79c4174fa7a591d4dac69109bd4ac705, type: 3}
@@ -3570,7 +3650,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 790852759}
-  - {fileID: 1775208173}
   - {fileID: 302980993}
-  - {fileID: 1124910847}
   - {fileID: 340083060}
+  - {fileID: 1775208173}
