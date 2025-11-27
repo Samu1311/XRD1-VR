@@ -13,16 +13,11 @@ public class GreeceRoomController : MonoBehaviour
     [SerializeField] private float completionDelay = 2f;
 
     [Header("Completion Message")]
-    [SerializeField] private GameObject completionTextPanel;
-    [SerializeField] private TextMeshProUGUI completionText;
     [SerializeField] private float messageDisplayDuration = 5f;
-    [SerializeField] private Vector3 textOffset = new Vector3(0f, 2f, 0f);
 
     [Header("Instructions Display")]
-    [SerializeField] private GameObject bowInstructionsPanel;
-    [SerializeField] private TextMeshProUGUI bowInstructionsText;
-    [SerializeField] private GameObject welcomeTextPanel;
-    [SerializeField] private TextMeshProUGUI welcomeText;
+    [SerializeField] private GameObject instructionCanvas;
+    [SerializeField] private TextMeshProUGUI instructionText;
     [SerializeField] private float instructionDisplayDuration = 8f;
     [SerializeField] private float welcomeDisplayDuration = 6f;
 
@@ -78,7 +73,6 @@ public class GreeceRoomController : MonoBehaviour
 
     private void Awake()
     {
-        // Setup audio source
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
@@ -88,14 +82,9 @@ public class GreeceRoomController : MonoBehaviour
         if (portal != null)
             portal.SetActive(false);
 
-        if (completionTextPanel != null)
-            completionTextPanel.SetActive(false);
-
-        if (bowInstructionsPanel != null)
-            bowInstructionsPanel.SetActive(false);
-
-        if (welcomeTextPanel != null)
-            welcomeTextPanel.SetActive(false);
+        // Instruction Canvas is hidden by default
+        if (instructionCanvas != null)
+            instructionCanvas.SetActive(false);
     }
 
     private void Start()
@@ -104,7 +93,7 @@ public class GreeceRoomController : MonoBehaviour
         StartCoroutine(ShowWelcomeMessageDelayed(1f));
     }
 
-    /// Call this when the Oracle is interacted with
+    /// Call  the following methods when following interactions occur
     public void OnOracleInteraction()
     {
         if (!oracleInteracted)
@@ -113,12 +102,10 @@ public class GreeceRoomController : MonoBehaviour
             RegisterInteraction("Oracle");
             Debug.Log("Greece Room: Oracle interaction registered");
 
-            // Show oracle instructions when first used
             ShowOracleInstructions();
         }
     }
 
-    /// Call this when any vase is interacted with
     public void OnVaseInteraction()
     {
         if (!vaseInteracted)
@@ -131,7 +118,6 @@ public class GreeceRoomController : MonoBehaviour
         }
     }
 
-    /// Call this when bow is grabbed or arrow is fired
     public void OnBowInteraction()
     {
         if (!bowInteracted)
@@ -147,11 +133,7 @@ public class GreeceRoomController : MonoBehaviour
     /// Manual method to show bow instructions
     public void ShowBowInstructions()
     {
-        if (bowInstructionsPanel != null && bowInstructionsText != null)
-        {
-            bowInstructionsText.text = string.Join("\n", bowInstructions);
-            StartCoroutine(DisplayBowInstructions());
-        }
+        ShowInstructionText(string.Join("\n", bowInstructions));
     }
 
     private IEnumerator ShowWelcomeMessageDelayed(float delay)
@@ -160,62 +142,58 @@ public class GreeceRoomController : MonoBehaviour
         ShowWelcomeMessage();
     }
 
-    /// Shows welcome message when entering the room
     public void ShowWelcomeMessage()
     {
-        if (welcomeTextPanel != null && welcomeText != null)
-        {
-            string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
-                                  "Explore this ancient civilization!\n\n" +
-                                  "OBJECTIVE: Complete 2 interactions\n" +
-                                  "• Consult the Oracle of Delphi\n" +
-                                  "• Examine ancient Greek vases\n" +
-                                  "• Practice archery with the bow\n\n" +
-                                  "Use your controller's front button to interact";
-
-            welcomeText.text = welcomeMessage;
-            StartCoroutine(DisplayWelcomeMessage());
-        }
+        string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
+                              "Explore this ancient civilization!\n\n" +
+                              "OBJECTIVE: Complete 2 interactions\n" +
+                              "• Consult the Oracle of Delphi\n" +
+                              "• Examine ancient Greek vases\n" +
+                              "• Practice archery with the bow\n\n" +
+                              "Use your controller's front button to interact";
+        ShowInstructionText(welcomeMessage);
     }
 
-    private IEnumerator DisplayWelcomeMessage()
-    {
-        welcomeTextPanel.SetActive(true);
-        yield return new WaitForSeconds(welcomeDisplayDuration);
-        welcomeTextPanel.SetActive(false);
-    }
 
-    private IEnumerator DisplayBowInstructions()
-    {
-        bowInstructionsPanel.SetActive(true);
-        yield return new WaitForSeconds(instructionDisplayDuration);
-        bowInstructionsPanel.SetActive(false);
-    }
-
-    /// <summary>
-    /// Shows Oracle instructions when first interacted with
-    /// </summary>
+    /// Shows instructions when first interacted with
     public void ShowOracleInstructions()
     {
         ShowInstructionText(string.Join("\n", oracleInstructions));
     }
 
-    /// <summary>
-    /// Shows Vase instructions when first interacted with
-    /// </summary>
     public void ShowVaseInstructions()
     {
         ShowInstructionText(string.Join("\n", vaseInstructions));
     }
 
-    /// Generic method to show instruction text using the bow instructions panel
-    private void ShowInstructionText(string instructionText)
+    private void ShowInstructionText(string textToShow)
     {
-        if (bowInstructionsPanel != null && bowInstructionsText != null)
+        if (instructionCanvas != null && instructionText != null)
         {
-            bowInstructionsText.text = instructionText;
-            StartCoroutine(DisplayBowInstructions()); // Reuse the same display coroutine
+            instructionText.text = textToShow;
+            PositionCanvasInFrontOfPlayer();
+            instructionCanvas.SetActive(true);
+            StopAllCoroutines();
+            StartCoroutine(HideInstructionCanvasAfterDelay(instructionDisplayDuration));
         }
+    }
+
+    // Positions the instruction canvas in front of the player's camera
+    private void PositionCanvasInFrontOfPlayer(float distance = 2f)
+    {
+        Camera cam = Camera.main;
+        if (cam != null && instructionCanvas != null)
+        {
+            instructionCanvas.transform.position = cam.transform.position + cam.transform.forward * distance;
+            instructionCanvas.transform.rotation = Quaternion.LookRotation(instructionCanvas.transform.position - cam.transform.position);
+        }
+    }
+
+    private IEnumerator HideInstructionCanvasAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (instructionCanvas != null)
+            instructionCanvas.SetActive(false);
     }
 
     private void RegisterInteraction(string interactionType)
@@ -237,10 +215,9 @@ public class GreeceRoomController : MonoBehaviour
         // Wait a moment for dramatic effect
         yield return new WaitForSeconds(completionDelay);
 
-        // Show completion message
+        // Show completion message and play sound if we end up adding it
         ShowCompletionMessage();
 
-        // Play completion sound
         if (completionSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(completionSound);
@@ -255,32 +232,14 @@ public class GreeceRoomController : MonoBehaviour
             Debug.Log("Greece Room: Portal activated!");
         }
 
-        // Fire completion event
+        // Fire completion event!
         OnRoomCompleted?.Invoke();
     }
 
     private void ShowCompletionMessage()
     {
-        if (completionTextPanel == null || completionText == null) return;
-
-        // Set completion message
         string message = GetCompletionMessage();
-        completionText.text = message;
-
-        // Show the message
-        completionTextPanel.SetActive(true);
-
-        // Hide after duration
-        StartCoroutine(HideCompletionMessage());
-    }
-
-    private IEnumerator HideCompletionMessage()
-    {
-        yield return new WaitForSeconds(messageDisplayDuration);
-        if (completionTextPanel != null)
-        {
-            completionTextPanel.SetActive(false);
-        }
+        ShowInstructionText(message);
     }
 
     private string GetCompletionMessage()
@@ -290,12 +249,12 @@ public class GreeceRoomController : MonoBehaviour
         if (vaseInteracted) interactions += "Vase ";
         if (bowInteracted) interactions += "Bow ";
 
-        return $"🎉 CONGRATULATIONS! 🎉\n\n" +
+        return $"CONGRATULATIONS! \n\n" +
                $"You have successfully explored Ancient Greece!\n\n" +
                $"You interacted with: {interactions.Trim()}\n\n" +
                $"The wisdom of the ancients flows through you.\n" +
-               $"Your time travel journey continues...\n\n" +
-               $"✨ Portal to Main Hub Activated ✨";
+               $"Portal to the Main Room Activated! Head to the Parthenon to to find it and end your journey.\n\n" +
+               $"If you do not want the journey to end, feel free to continue exploring!";
     }
 
     // Public methods to check interaction states (for debugging/inspector)
