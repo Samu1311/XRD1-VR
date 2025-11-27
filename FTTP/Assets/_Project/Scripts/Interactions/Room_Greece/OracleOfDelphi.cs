@@ -40,6 +40,7 @@ public class OracleOfDelphi : MonoBehaviour
     private bool isRecording = false;
     private float recordStartTime;
     private XRSimpleInteractable interactable;
+    private GreeceRoomController roomController;
 
     // Thematic yes/no responses
     private string[] yesAnswers = new string[]
@@ -72,6 +73,9 @@ public class OracleOfDelphi : MonoBehaviour
 
     private void Awake()
     {
+        // Find the room controller
+        roomController = FindObjectOfType<GreeceRoomController>();
+
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
 
@@ -82,16 +86,48 @@ public class OracleOfDelphi : MonoBehaviour
 
         // Get or create XR interaction component
         interactable = GetComponent<XRSimpleInteractable>();
+        if (interactable == null)
+        {
+            interactable = gameObject.AddComponent<XRSimpleInteractable>();
+        }
+
+        // Ensure Oracle has proper setup for VR interaction
+        var collider = GetComponent<Collider>();
+        if (collider == null)
+        {
+            // Add Box Collider if none exists
+            var boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider.isTrigger = true;
+            boxCollider.size = new Vector3(2f, 3f, 2f); // Reasonable size for Oracle interaction
+            Debug.Log($"Oracle {gameObject.name}: Added Box Collider for VR interaction");
+        }
+        else
+        {
+            // Ensure collider is set as trigger for proper VR interaction
+            collider.isTrigger = true;
+            Debug.Log($"Oracle {gameObject.name}: Collider configured as trigger");
+        }
+
         interactable.selectEntered.AddListener(OnOraclePressed);
-        interactable.selectExited.AddListener(OnOracleReleased);        // Hide UI initially
+
+        // Ensure Oracle is on Default layer for VR interaction
+        if (gameObject.layer != 0)
+        {
+            Debug.LogWarning($"Oracle {gameObject.name} is on layer {gameObject.layer}, changing to Default (0) for VR interaction");
+            gameObject.layer = 0;
+        }
+
+        Debug.Log($"Oracle {gameObject.name} setup complete - Layer: {gameObject.layer}, Collider: {collider?.GetType().Name}, IsTrigger: {collider?.isTrigger}");
+
+        // Hide UI initially
         if (hoverPrompt != null) hoverPrompt.SetActive(false);
         if (dialoguePanel != null) dialoguePanel.gameObject.SetActive(false);
         if (recordingIndicator != null) recordingIndicator.SetActive(false);
         if (thinkingIndicator != null) thinkingIndicator.SetActive(false);
 
-        // Set hover text
+        // Set hover text for trigger interaction
         if (hoverText != null)
-            hoverText.text = "Hold to Ask Oracle\n(Ask a yes/no question)";
+            hoverText.text = "Press trigger to consult Oracle";
     }
 
 
@@ -101,7 +137,6 @@ public class OracleOfDelphi : MonoBehaviour
         CheckPlayerProximity();
         HandleRecording();
     }
-
     private void CheckPlayerProximity()
     {
         if (playerCamera == null || isProcessing) return;
@@ -153,7 +188,13 @@ public class OracleOfDelphi : MonoBehaviour
 
     private void OnOraclePressed(SelectEnterEventArgs args)
     {
-        if (isProcessing || isRecording) return;
+        Debug.Log($"Oracle pressed by {args.interactorObject.transform.name}");
+
+        if (isRecording || isProcessing)
+        {
+            Debug.Log("Oracle busy - recording or processing");
+            return;
+        }
 
         StartRecording();
     }
@@ -189,6 +230,12 @@ public class OracleOfDelphi : MonoBehaviour
 
         if (dialoguePanel != null)
             dialoguePanel.SetText("The Oracle has heard your question...");
+
+        // Notify room controller of Oracle interaction
+        if (roomController != null)
+        {
+            roomController.OnOracleInteraction();
+        }
 
         StartCoroutine(OracleResponse());
     }
@@ -266,4 +313,16 @@ public class OracleOfDelphi : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, activationDistance);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Oracle trigger entered by: {other.gameObject.name} (Layer: {other.gameObject.layer})");
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log($"Oracle trigger exited by: {other.gameObject.name}");
+    }
+
+
 }

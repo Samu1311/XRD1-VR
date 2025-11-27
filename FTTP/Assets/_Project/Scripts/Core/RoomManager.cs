@@ -27,20 +27,12 @@ public class RoomManager : MonoBehaviour
 
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
     {
-        // --- REMOVE MAIN PORTAL BEFORE LOADING ---
-        GameObject mainPortal = GameObject.FindWithTag("MainPortal");
-        if (mainPortal != null)
-        {
-            Destroy(mainPortal);
-            Debug.Log("Main portal removed before loading new room.");
-        }
-
-        // --- LOAD NEW ROOM ADDITIVELY ---
+        // Load new room additively
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
             yield return null;
 
-        // --- UNLOAD PREVIOUS ROOM (BUT NOT MAIN) ---
+        // Unload previous room (but not Main)
         if (!string.IsNullOrEmpty(_currentRoom) && _currentRoom != "Main")
         {
             SceneManager.UnloadSceneAsync(_currentRoom);
@@ -51,7 +43,7 @@ public class RoomManager : MonoBehaviour
         // Wait one frame so scene objects spawn
         yield return null;
 
-        // --- FIND PLAYER SPAWN POINT ---
+        // Find player spawn point
         GameObject spawn = GameObject.FindWithTag("PlayerSpawn");
         if (spawn == null)
         {
@@ -59,7 +51,7 @@ public class RoomManager : MonoBehaviour
             yield break;
         }
 
-        // --- FIND XR RIG ---
+        // Find XR rig
         XROrigin rig = FindObjectOfType<XROrigin>();
         if (rig == null)
         {
@@ -67,9 +59,19 @@ public class RoomManager : MonoBehaviour
             yield break;
         }
 
-        // --- TELEPORT XR RIG ---
-        rig.MoveCameraToWorldLocation(spawn.transform.position);
+        // Teleport XR rig (Fixed to prevent scaling issues)
+        // Store original scale to preserve it
+        Vector3 originalScale = rig.transform.localScale;
+
+        // Calculate offset between camera and rig
+        Vector3 cameraOffset = rig.Camera.transform.position - rig.transform.position;
+
+        // Set rig position accounting for camera offset
+        rig.transform.position = spawn.transform.position - cameraOffset;
         rig.transform.rotation = spawn.transform.rotation;
+
+        // Ensure scale is preserved
+        rig.transform.localScale = originalScale;
 
         Debug.Log($"Player moved to spawn point in: {roomName}");
     }

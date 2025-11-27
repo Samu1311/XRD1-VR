@@ -13,14 +13,18 @@ public class GreekVase : MonoBehaviour
     [SerializeField] private GameObject textPanel;
     [SerializeField] private TextMeshProUGUI mythTextUI;
     [SerializeField] private float displayDuration = 5f;
-    [SerializeField] private Vector3 textOffset = new Vector3(0, 1.5f, 0);
+    [SerializeField] private Vector3 textOffset = new Vector3(0, 2.5f, 0);
 
     private XRSimpleInteractable interactable;
     private GameObject activeTextPanel;
     private float hideTimer;
+    private GreeceRoomController roomController;
 
     private void Awake()
     {
+        // Find the room controller
+        roomController = FindObjectOfType<GreeceRoomController>();
+
         interactable = GetComponent<XRSimpleInteractable>();
         interactable.selectEntered.AddListener(OnVaseClicked);
     }
@@ -47,6 +51,12 @@ public class GreekVase : MonoBehaviour
 
     private void OnVaseClicked(SelectEnterEventArgs args)
     {
+        // Notify room controller of vase interaction
+        if (roomController != null)
+        {
+            roomController.OnVaseInteraction();
+        }
+
         ShowText();
     }
 
@@ -109,6 +119,8 @@ public class GreekVase : MonoBehaviour
                 textComponent.text = mythText;
             }
 
+            // Text panels now keep their manually set size
+
             activeTextPanel.SetActive(true);
             hideTimer = displayDuration;
         }
@@ -161,15 +173,16 @@ public class GreekVase : MonoBehaviour
 
         if (playerCamera != null)
         {
-            // Calculate direction from panel to camera
-            Vector3 directionToCamera = playerCamera.transform.position - transform.position;
-            directionToCamera.y = 0; // Keep panel upright, only rotate horizontally
+            // Calculate direction from camera to panel (FIXED: was backwards)
+            Vector3 directionFromCamera = transform.position - playerCamera.transform.position;
+            directionFromCamera.y = 0; // Keep panel upright, only rotate horizontally
 
             // Return rotation that faces the camera
-            return Quaternion.LookRotation(directionToCamera);
+            return Quaternion.LookRotation(directionFromCamera);
         }
 
         // Fallback: face forward
         return Quaternion.identity;
     }
+
 }
