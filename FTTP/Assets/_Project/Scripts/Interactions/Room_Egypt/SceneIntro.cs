@@ -1,15 +1,19 @@
 using UnityEngine;
 
-public class SceneIntro : MonoBehaviour
+public class SceneIntroTrigger : MonoBehaviour
 {
-    public SphinxTalk sphinxTalk; 
+    public SphinxTalk sphinxTalk;
+    private bool triggered = false;
 
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        // Play the intro audio automatically when the scene loads
-        if (sphinxTalk != null)
+        if (triggered) return;
+
+        if (other.CompareTag("Player"))
         {
-            sphinxTalk.PlayIntro();
+            triggered = true;
+            if (sphinxTalk != null)
+                sphinxTalk.PlayIntro();
         }
     }
 }

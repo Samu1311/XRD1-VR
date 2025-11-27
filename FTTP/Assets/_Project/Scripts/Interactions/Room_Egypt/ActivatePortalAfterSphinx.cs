@@ -1,39 +1,25 @@
 using UnityEngine;
 
-public class ActivatePortalAfterSphinx : MonoBehaviour
+public class PortalTrigger : MonoBehaviour
 {
-    public SphinxTalk sphinxTalk;      // Drag your SphinxTalk script here
-    public GameObject portalObject;    // Drag the portal prefab or portal object
-    public float delayAfterAudio = 1f; // Extra delay before showing the portal
+    public PortalActivate portal;          // Your portal script
+    public SphinxClueManager clueManager;  // Reference to the manager that tracks collected items
+    private bool triggered = false;
 
-    private bool portalActivated = false;
-
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        // If we already spawned the portal ? stop checking
-        if (portalActivated) return;
+        if (triggered) return;
 
-        // Check if the Sphinx is playing the final audio
-        if (!sphinxTalk.audioSource.isPlaying && sphinxTalk.finalClip != null)
+        if (other.CompareTag("Player"))
         {
-            // Portal appears ONLY after final clip was previously played
-            if (sphinxTalk.lastClipPlayed == sphinxTalk.finalClip)
+            // Only activate if all required objects are collected
+            if (clueManager != null && clueManager.AllItemsCollected())
             {
-                ActivatePortal();
+                triggered = true;
+
+                if (portal != null)
+                    portal.ActivatePortal();
             }
         }
-    }
-
-    private void ActivatePortal()
-    {
-        portalActivated = true;
-
-        // Optional delay
-        Invoke(nameof(ShowPortal), delayAfterAudio);
-    }
-
-    private void ShowPortal()
-    {
-        portalObject.SetActive(true);
     }
 }
