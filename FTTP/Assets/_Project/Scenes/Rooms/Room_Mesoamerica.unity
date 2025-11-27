@@ -2436,6 +2436,10 @@ PrefabInstance:
       propertyPath: OnPlateStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3562807731434496652, guid: a4babf6495f63f042ada9ae420d78c8a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5418073551007736421, guid: a4babf6495f63f042ada9ae420d78c8a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.22
