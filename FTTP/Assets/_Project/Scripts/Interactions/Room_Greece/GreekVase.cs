@@ -13,7 +13,9 @@ public class GreekVase : MonoBehaviour
     [SerializeField] private GameObject textPanel;
     [SerializeField] private TextMeshProUGUI mythTextUI;
     [SerializeField] private float displayDuration = 5f;
-    [SerializeField] private Vector3 textOffset = new Vector3(0, 2.5f, 0);
+
+    [Header("Effects")]
+    [SerializeField] private AudioClip magicSoundClip;
 
     private XRSimpleInteractable interactable;
     private GameObject activeTextPanel;
@@ -49,6 +51,13 @@ public class GreekVase : MonoBehaviour
         }
     }
 
+    private void PlayAudioClip(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+
     private void OnVaseClicked(SelectEnterEventArgs args)
     {
         // Notify room controller of vase interaction
@@ -56,7 +65,7 @@ public class GreekVase : MonoBehaviour
         {
             roomController.OnVaseInteraction();
         }
-
+        PlayAudioClip(magicSoundClip);
         ShowText();
     }
 
@@ -67,12 +76,8 @@ public class GreekVase : MonoBehaviour
         if (mythDatabase != null)
         {
             mythText = mythDatabase.GetMythText(mythIndex);
-            Debug.Log($"Vase {gameObject.name}: Got myth text: {mythText}");
         }
-        else
-        {
-            Debug.LogWarning($"Vase {gameObject.name}: No myth database assigned!");
-        }
+
 
         if (textPanel != null)
         {
@@ -100,14 +105,12 @@ public class GreekVase : MonoBehaviour
             var mysticPanel = activeTextPanel.GetComponent<MysticTextPanel>();
             if (mysticPanel != null)
             {
-                Debug.Log($"Setting text via MysticTextPanel: {mythText}");
                 mysticPanel.SetText(mythText);
             }
 
             // Also set on direct TextMeshPro if assigned
             if (mythTextUI != null)
             {
-                Debug.Log($"Setting text via mythTextUI: {mythText}");
                 mythTextUI.text = mythText;
             }
 
@@ -115,7 +118,6 @@ public class GreekVase : MonoBehaviour
             var allTextComponents = activeTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
             foreach (var textComponent in allTextComponents)
             {
-                Debug.Log($"Setting text on component {textComponent.name}: {mythText}");
                 textComponent.text = mythText;
             }
 
@@ -124,10 +126,7 @@ public class GreekVase : MonoBehaviour
             activeTextPanel.SetActive(true);
             hideTimer = displayDuration;
         }
-        else
-        {
-            Debug.Log($"Greek Vase {gameObject.name}: {mythText}");
-        }
+
     }
 
     private void HideText()
@@ -173,7 +172,6 @@ public class GreekVase : MonoBehaviour
 
         if (playerCamera != null)
         {
-            // Calculate direction from camera to panel (FIXED: was backwards)
             Vector3 directionFromCamera = transform.position - playerCamera.transform.position;
             directionFromCamera.y = 0; // Keep panel upright, only rotate horizontally
 

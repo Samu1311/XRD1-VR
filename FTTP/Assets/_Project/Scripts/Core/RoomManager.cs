@@ -8,6 +8,8 @@ public class RoomManager : MonoBehaviour
 
     private string _currentRoom;
 
+    private bool isLoadingRoom = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,7 +24,10 @@ public class RoomManager : MonoBehaviour
 
     public void LoadRoomByName(string roomName)
     {
+        if (isLoadingRoom) return;
+        isLoadingRoom = true;
         StartCoroutine(LoadRoomRoutine(roomName));
+        isLoadingRoom = false;
     }
 
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
