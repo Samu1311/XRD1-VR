@@ -1128,6 +1128,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlayerHand
       objectReference: {fileID: 0}
+    - target: {fileID: 8190675798835546636, guid: 68f0d0f936635e348943945a8456e8fa, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4377821629344221565, guid: 68f0d0f936635e348943945a8456e8fa, type: 3}
     m_RemovedGameObjects: []

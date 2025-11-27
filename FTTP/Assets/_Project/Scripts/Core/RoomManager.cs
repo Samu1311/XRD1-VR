@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,8 +8,6 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance { get; private set; }
 
     private string _currentRoom;
-
-    private bool isLoadingRoom = false;
 
     private void Awake()
     {
@@ -24,14 +23,18 @@ public class RoomManager : MonoBehaviour
 
     public void LoadRoomByName(string roomName)
     {
-        if (isLoadingRoom) return;
-        isLoadingRoom = true;
         StartCoroutine(LoadRoomRoutine(roomName));
-        isLoadingRoom = false;
     }
 
     private System.Collections.IEnumerator LoadRoomRoutine(string roomName)
     {
+        // --- REMOVE MAIN PORTAL BEFORE LOADING ---
+        GameObject mainPortal = GameObject.FindWithTag("MainPortal");
+        if (mainPortal != null)
+        {
+            Destroy(mainPortal);
+        }
+
         // Load new room additively
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
         while (!loadOp.isDone)
@@ -52,7 +55,6 @@ public class RoomManager : MonoBehaviour
         GameObject spawn = GameObject.FindWithTag("PlayerSpawn");
         if (spawn == null)
         {
-            Debug.LogWarning($"No PlayerSpawn found in scene '{roomName}'!");
             yield break;
         }
 
@@ -60,7 +62,6 @@ public class RoomManager : MonoBehaviour
         XROrigin rig = FindObjectOfType<XROrigin>();
         if (rig == null)
         {
-            Debug.LogError("No XROrigin found in the persistent scene!");
             yield break;
         }
 
@@ -78,6 +79,5 @@ public class RoomManager : MonoBehaviour
         // Ensure scale is preserved
         rig.transform.localScale = originalScale;
 
-        Debug.Log($"Player moved to spawn point in: {roomName}");
     }
 }
