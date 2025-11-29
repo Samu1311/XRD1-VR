@@ -42,7 +42,7 @@ Below you’ll find our **official video presentation**, where we walk through t
 
 ### 👥 5. Team Workflow
 - Parallel development per room  
-- Weekly merges  
+- Merges of initial environments, then a few larger merges of the functionality  
 - Troubleshooting merge conflicts & XR issues  
 - Reflections on teamwork and iteration  
 

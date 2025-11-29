@@ -23,7 +23,7 @@ We spent most of the week experimenting with how to fix this, including:
 - resizing or repositioning assets  
 - understanding how Unity handles FBX imports  
 
-By the end of the week, we had **4 environment** fully imported in correct scale, with proper textures and lighting.
+By the end of the week, we had **4 environments** fully imported in correct scale, with proper textures and lighting, though as we were still figuring out the exact layouts and setup, so had not commmited our changes yet.
 
 ## 👥 Team Reflections
 We realized early on that each room would require a different set of assets and styling, so working in parallel made sense. Still, we exchanged tips constantly — especially about how to make models look good in VR without heavy performance costs.
