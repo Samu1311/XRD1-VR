@@ -9,6 +9,7 @@ TagManager:
   - PlayerHand
   - Anchor
   - MainPortal
+  - LeftHand
   layers:
   - Default
   - TransparentFX
