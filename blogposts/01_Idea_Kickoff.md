@@ -4,7 +4,7 @@
 This semester’s XR Development course at **VIA University College** challenges us to design and build an interactive **Virtual Reality (VR)** experience using **Unity**.  
 Our goal is to not only showcase our technical understanding of XR systems, but also to design an experience that is **immersive, educational, and fun**.
 
-After several brainstorming sessions exploring various ideas — from futuristic simulations to training systems — our team decided to take a creative route that combines **historical curiosity** with **puzzle-solving gameplay**.
+After several brainstorming sessions exploring various ideas — from futuristic simulations to training systems — our team decided to take a creative route that combines **historical curiosity** with **interactive, puzzle-solving gameplay**.
 
 ---
 
@@ -18,8 +18,8 @@ After several brainstorming sessions exploring various ideas — from futuristic
 4. 🏛️ **Ancient Greece**  
 
 In each “**time room**,” players will step into a distinct historical environment inspired by one of these cultures.  
-The goal in each room is to **solve 2–3 puzzles** that reflect elements of the respective civilization — from engineering and architecture to language, symbols, and mythology.  
-Once all puzzles in a room are completed, a **portal** activates, allowing the player to travel to the next era.
+The goal in each room is to **solve 1–3 puzzles** that reflect elements of the respective civilization — from engineering and architecture to language, symbols, and mythology.  
+Once all puzzles/interactions in a room are completed, a **portal** activates, allowing the player to travel to the next era.
 
 ---
 
