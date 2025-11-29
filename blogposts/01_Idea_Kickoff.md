@@ -69,6 +69,8 @@ We wanted a project that would let us **showcase technical skills** (interaction
 - A theme that is inherently **educational** and accessible to all audiences.  
 - Opportunities to test **different VR mechanics** across environments.
 
+Additionally, we believe the experience could be transformed into something truly educational while still being engaging, although right now we mostly wanted to focus on having fun, as well as on just making it work. Thus, at the current idea level as well as our resources, it may not end up being the most historically accurate or educational, but it should still retain these aspects to some level, while also being fuuun!
+
 ---
 
 ## 🗓️ Next Steps
