@@ -17,25 +17,27 @@ A few issues we ran into:
 - duplicate Interaction Managers  
 - mismatched scene names  
 - broken prefab links  
-- objects disappearing after merge  
+- objects disappearing after merge
+- missing scripts and/or references
 
-We were forced to create **Main-v2**, a clean rebuild of the main scene, so we could re-link everything manually.
+We were forced to create **Main-v2**, a clean rebuild of the main scene, so we could re-link everything manually. That took a lot of time, with stuff still breaking sometimes even when we switched to working simultaneously only on main-v2, committing directly and pulling updates in there. 
 
 ## 🧪 Testing the MVP
 Once the scenes were finally integrated:
 - teleportation worked  
-- puzzles triggered properly  
+- most of the puzzles triggered properly  
 - portals opened as expected  
 - performance remained acceptable  
 
-We had a working MVP, even if the process wasn’t smooth.
+We had a mostly working MVP, even if the process wasn’t smooth... at ALL
 
 ## 🧠 Reflection
 This was the most “real software engineering” week so far.  
 Merging multiple independent XR projects is messy — but facing this together taught us a lot about organization and communication.
+Additionally, we learned an important lesson - to do environments in smaller scales using less assets and focusing more on the interactions, as well as to *never again* leave merging for projects this large for the last few days before the presentation... At least we had fun (not counting the merging..._shudders_)?
 
 ## 🔭 Next Steps
-Final presentation week + final bug fixes.
+Final presentation week + final bug fixes after the presentation.
 
 
 Authors: Alejandro & Ginta
