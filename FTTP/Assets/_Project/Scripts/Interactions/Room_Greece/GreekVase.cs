@@ -108,20 +108,18 @@ public class GreekVase : MonoBehaviour
                 mysticPanel.SetText(mythText);
             }
 
-            // Also set on direct TextMeshPro if assigned
             if (mythTextUI != null)
             {
                 mythTextUI.text = mythText;
             }
 
-            // Find and set ALL TextMeshPro components in children
             var allTextComponents = activeTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
             foreach (var textComponent in allTextComponents)
             {
                 textComponent.text = mythText;
             }
 
-            // Text panels now keep their manually set size
+            // Text panels keep their manually set size
 
             activeTextPanel.SetActive(true);
             hideTimer = displayDuration;
@@ -150,7 +148,7 @@ public class GreekVase : MonoBehaviour
 
         // Position the panel above the vase with some extra margin
         Vector3 position = transform.position;
-        position.y += vaseHeight + 0.5f; // Add vase height plus extra margin
+        position.y += vaseHeight + 1f; // Vase height plus extra margin
 
         return position;
     }

@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
 /// Watches multiple pressure plates and fires OnSolved when conditions are met.
-/// </summary>
 public class PressurePlatePuzzleController : MonoBehaviour
 {
     public PressurePlate[] plates;
 
     [Header("Events")]
     public UnityEvent OnSolved;
+
+    [Header("Instructions")]
+    [Tooltip("Assign the InstructionTextCanvas in the scene.")]
+    public InstructionTextCanvas instructionCanvas;
 
     private bool _solved;
 
@@ -20,6 +22,11 @@ public class PressurePlatePuzzleController : MonoBehaviour
             if (plate != null)
                 plate.OnPlateStateChanged.AddListener(OnPlateStateChanged);
         }
+    }
+
+    private void Start()
+    {
+        ShowRoomInstructions();
     }
 
     private void OnDestroy()
@@ -54,5 +61,14 @@ public class PressurePlatePuzzleController : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    // Show instructions when the player enters the room
+    private void ShowRoomInstructions()
+    {
+        if (instructionCanvas != null)
+        {
+            instructionCanvas.ShowInstructions("Find all the boxes and place them on pressure plates \nto reveal the next portal!");
+        }
     }
 }

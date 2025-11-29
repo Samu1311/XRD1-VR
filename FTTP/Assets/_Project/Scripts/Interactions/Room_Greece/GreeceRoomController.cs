@@ -29,8 +29,8 @@ public class GreeceRoomController : MonoBehaviour
     public UnityEvent OnRoomCompleted;
 
     // Tracking interaction states
+    private int vaseInteractionCount = 0;
     private bool oracleInteracted = false;
-    private bool vaseInteracted = false;
     private bool bowInteracted = false;
     private int totalInteractions = 0;
     private bool isCompleted = false;
@@ -108,9 +108,9 @@ public class GreeceRoomController : MonoBehaviour
 
     public void OnVaseInteraction()
     {
-        if (!vaseInteracted)
+        if (vaseInteractionCount > 0)
         {
-            vaseInteracted = true;
+            vaseInteractionCount++;
             RegisterInteraction("Vase");
             Debug.Log("Greece Room: Vase interaction registered");
 
@@ -146,9 +146,9 @@ public class GreeceRoomController : MonoBehaviour
     {
         string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
                               "Explore this ancient civilization!\n\n" +
-                              "OBJECTIVE: Complete 2 interactions\n" +
+                              "OBJECTIVE: Complete 2 interactions to move forward to the past\n" +
                               "• Consult the Oracle of Delphi\n" +
-                              "• Examine ancient Greek vases\n" +
+                              "• Examine ancient Greek vases and learn about different myths\n" +
                               "• Practice archery with the bow\n\n" +
                               "Use your controller's front button to interact";
         ShowInstructionText(welcomeMessage);
@@ -232,7 +232,7 @@ public class GreeceRoomController : MonoBehaviour
             Debug.Log("Greece Room: Portal activated!");
         }
 
-        // Fire completion event!
+        // Completion event!
         OnRoomCompleted?.Invoke();
     }
 
@@ -244,23 +244,21 @@ public class GreeceRoomController : MonoBehaviour
 
     private string GetCompletionMessage()
     {
-        string interactions = "";
-        if (oracleInteracted) interactions += "Oracle ";
-        if (vaseInteracted) interactions += "Vase ";
-        if (bowInteracted) interactions += "Bow ";
+        var interactionsList = new System.Collections.Generic.List<string>();
 
-        return $"CONGRATULATIONS! \n\n" +
-               $"You have successfully explored Ancient Greece!\n\n" +
-               $"You interacted with: {interactions.Trim()}\n\n" +
-               $"The wisdom of the ancients flows through you.\n" +
-               $"Portal to the Main Room Activated! Head to the Parthenon to to find it and end your journey.\n\n" +
-               $"If you do not want the journey to end, feel free to continue exploring!";
+        if (vaseInteractionCount > 0)
+            interactionsList.Add(vaseInteractionCount == 1 ? "• Interacted with 1 vase" : $"• Interacted with {vaseInteractionCount} vases");
+        if (bowInteracted)
+            interactionsList.Add("• Tried archery");
+        if (oracleInteracted)
+            interactionsList.Add("• Spoken with the Oracle");
+
+        string details = interactionsList.Count > 0 ? string.Join("\n", interactionsList) : "• None";
+
+        return $"You have successfully explored Ancient Greece!\n\n" +
+               $"You have:\n{details}\n\n" +
+               $"The wisdom of the ancients flows through you!\n" +
+               $"As a reward, the portal to the next room has been activated! Head to the Parthenon to find it and continue your journey elsewhere...\n";
     }
 
-    // Public methods to check interaction states (for debugging/inspector)
-    public bool IsOracleInteracted => oracleInteracted;
-    public bool IsVaseInteracted => vaseInteracted;
-    public bool IsBowInteracted => bowInteracted;
-    public int TotalInteractions => totalInteractions;
-    public bool IsCompleted => isCompleted;
 }
