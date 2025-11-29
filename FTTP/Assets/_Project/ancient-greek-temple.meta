@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:FTTP/Assets/_Project/ancient-greek-temple.meta
 guid: 20b1c29359c32ee48a1581f7d5fe586c
 folderAsset: yes
 DefaultImporter:
+========
+guid: 9c9e1047532fccf43882221e69ce896f
+NativeFormatImporter:
+>>>>>>>> Stashed changes:FTTP/Assets/FullOpaqueWater&Waterfall/DemoScene/DemoScene_VFX_WaterOpaque/LightingData.asset.meta
   externalObjects: {}
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
