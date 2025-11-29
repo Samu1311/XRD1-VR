@@ -3,7 +3,7 @@
 ## 🧩 Puzzle Experiments Begin
 This was the most experimental week so far. Everyone began prototyping puzzle ideas for their rooms.
 
-In the case of Mesoamerica for examplel, we initially wanted a **rotating Mayan calendar puzzle** made of multiple rings. However:
+In the case of Mesoamerica for example, we initially wanted a **rotating Mayan calendar puzzle** made of multiple rings. However:
 - the model didn't have separate rings  
 - splitting them manually was time-consuming  
 - interaction became unpredictable  
