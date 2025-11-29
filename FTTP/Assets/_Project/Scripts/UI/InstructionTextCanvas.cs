@@ -14,24 +14,16 @@ public class InstructionTextCanvas : MonoBehaviour
 
     private Coroutine hideCoroutine;
 
-    // Show instructions and keep canvas visible in front of player
+    // Show instructions and position canvas once in front of player
     public void ShowInstructions(string text)
     {
         if (instructionText == null) return;
         instructionText.text = text;
+        PositionInFrontOfPlayer();
         gameObject.SetActive(true);
         if (hideCoroutine != null)
             StopCoroutine(hideCoroutine);
         hideCoroutine = StartCoroutine(HideAfterDelay());
-    }
-
-    // Every frame, keep the canvas in front of the player's camera while active
-    private void Update()
-    {
-        if (gameObject.activeSelf)
-        {
-            PositionInFrontOfPlayer();
-        }
     }
 
     // Position the canvas in front of the player

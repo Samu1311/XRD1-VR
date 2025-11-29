@@ -102,8 +102,7 @@ public class OracleOfDelphi : MonoBehaviour
     private void StartInteraction()
     {
         if (isProcessing || isRecording) return;
-        if (IsButtonPressed()) StartRecording();
-        else ShowDialogue("Hold the button and ask your question.");
+        ShowDialogue("Hold the button and ask your question.");
     }
 
     private void EndInteraction()
@@ -117,14 +116,14 @@ public class OracleOfDelphi : MonoBehaviour
         recordStartTime = Time.time;
         SetUIActive(false);
         recordingIndicator?.SetActive(true);
-        ShowDialogue("Recording... (0.0s elapsed)");
+        ShowDialogue("Waiting...");
     }
 
     private void CompleteRecording()
     {
         isRecording = false;
         recordingIndicator?.SetActive(false);
-        ShowDialogue("The Oracle is thinking...");
+        ShowDialogue("Thinking...");
         roomController?.OnOracleInteraction();
         StartCoroutine(OracleResponse());
     }

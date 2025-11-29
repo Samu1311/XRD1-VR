@@ -51,7 +51,7 @@ public class GreeceRoomController : MonoBehaviour
     private readonly string[] oracleInstructions = {
         "ORACLE OF DELPHI INSTRUCTIONS",
         "",
-        "1. Point at the Oracle",
+        "1. Find the Oracle in the temple of Delphi",
         "2. Hold the front button",
         "3. Ask a yes/no question aloud",
         "4. Release button when done asking",
@@ -147,7 +147,7 @@ public class GreeceRoomController : MonoBehaviour
         string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
                               "Explore this ancient civilization!\n\n" +
                               "OBJECTIVE: Complete 2 interactions to move forward to the past\n" +
-                              "• Consult the Oracle of Delphi\n" +
+                              "• Consult the Oracle of Delphi in the colourful temple of Delphi\n" +
                               "• Examine ancient Greek vases and learn about different myths\n" +
                               "• Practice archery with the bow\n\n" +
                               "Use your controller's front button to interact";
