@@ -224,13 +224,14 @@ GameObject:
   - component: {fileID: 4029899087311415824}
   - component: {fileID: 5330617455084215416}
   - component: {fileID: 8999889962740622106}
+  - component: {fileID: 1234567890123456789}
   m_Layer: 0
   m_Name: InstructionTextCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5119105694898937701
 RectTransform:
   m_ObjectHideFlags: 0
@@ -314,3 +315,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1234567890123456789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089850266076969043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4b79096e140ed438c418e4ee00959e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instructionText: {fileID: 1550329504813192529}
+  displayDuration: 6
+  distanceFromPlayer: 2

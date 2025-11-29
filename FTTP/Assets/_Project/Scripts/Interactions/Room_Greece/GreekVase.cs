@@ -139,7 +139,7 @@ public class GreekVase : MonoBehaviour
     {
         // Get the vase's renderer bounds to calculate its height
         Renderer vaseRenderer = GetComponent<Renderer>();
-        float vaseHeight = 1f; // Default fallback height
+        float vaseHeight = 2f; // Default fallback height
 
         if (vaseRenderer != null)
         {
@@ -148,7 +148,7 @@ public class GreekVase : MonoBehaviour
 
         // Position the panel above the vase with some extra margin
         Vector3 position = transform.position;
-        position.y += vaseHeight + 1f; // Vase height plus extra margin
+        position.y += vaseHeight + 2f; // Vase height plus extra margin
 
         return position;
     }

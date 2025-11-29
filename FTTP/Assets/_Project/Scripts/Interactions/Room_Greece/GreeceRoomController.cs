@@ -16,10 +16,7 @@ public class GreeceRoomController : MonoBehaviour
     [SerializeField] private float messageDisplayDuration = 5f;
 
     [Header("Instructions Display")]
-    [SerializeField] private GameObject instructionCanvas;
-    [SerializeField] private TextMeshProUGUI instructionText;
-    [SerializeField] private float instructionDisplayDuration = 8f;
-    [SerializeField] private float welcomeDisplayDuration = 6f;
+    [SerializeField] private InstructionTextCanvas instructionCanvas;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -82,15 +79,24 @@ public class GreeceRoomController : MonoBehaviour
         if (portal != null)
             portal.SetActive(false);
 
-        // Instruction Canvas is hidden by default
-        if (instructionCanvas != null)
-            instructionCanvas.SetActive(false);
+        // InstructionTextCanvas will be managed by this script
     }
 
     private void Start()
     {
-        // Show welcome message when entering room
-        StartCoroutine(ShowWelcomeMessageDelayed(1f));
+        ShowWelcomeMessage();
+    }
+
+    private void ShowWelcomeMessage()
+    {
+        string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
+                              "Explore this ancient civilization!\n\n" +
+                              "OBJECTIVE: Complete 2 interactions to move forward to the past\n" +
+                              "• Consult the Oracle of Delphi in the colourful temple of Delphi\n" +
+                              "• Examine ancient Greek vases and learn about different myths\n" +
+                              "• Practice archery with the bow\n\n" +
+                              "Use your controller's front button to interact";
+        ShowInstructionText(welcomeMessage);
     }
 
     /// Call  the following methods when following interactions occur
@@ -136,23 +142,7 @@ public class GreeceRoomController : MonoBehaviour
         ShowInstructionText(string.Join("\n", bowInstructions));
     }
 
-    private IEnumerator ShowWelcomeMessageDelayed(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ShowWelcomeMessage();
-    }
 
-    public void ShowWelcomeMessage()
-    {
-        string welcomeMessage = "WELCOME TO ANCIENT GREECE\n\n" +
-                              "Explore this ancient civilization!\n\n" +
-                              "OBJECTIVE: Complete 2 interactions to move forward to the past\n" +
-                              "• Consult the Oracle of Delphi in the colourful temple of Delphi\n" +
-                              "• Examine ancient Greek vases and learn about different myths\n" +
-                              "• Practice archery with the bow\n\n" +
-                              "Use your controller's front button to interact";
-        ShowInstructionText(welcomeMessage);
-    }
 
 
     /// Shows instructions when first interacted with
@@ -168,33 +158,14 @@ public class GreeceRoomController : MonoBehaviour
 
     private void ShowInstructionText(string textToShow)
     {
-        if (instructionCanvas != null && instructionText != null)
-        {
-            instructionText.text = textToShow;
-            PositionCanvasInFrontOfPlayer();
-            instructionCanvas.SetActive(true);
-            StopAllCoroutines();
-            StartCoroutine(HideInstructionCanvasAfterDelay(instructionDisplayDuration));
-        }
-    }
+        if (instructionCanvas == null)
+            instructionCanvas = FindObjectOfType<InstructionTextCanvas>();
 
-    // Positions the instruction canvas in front of the player's camera
-    private void PositionCanvasInFrontOfPlayer(float distance = 2f)
-    {
-        Camera cam = Camera.main;
-        if (cam != null && instructionCanvas != null)
-        {
-            instructionCanvas.transform.position = cam.transform.position + cam.transform.forward * distance;
-            instructionCanvas.transform.rotation = Quaternion.LookRotation(instructionCanvas.transform.position - cam.transform.position);
-        }
-    }
-
-    private IEnumerator HideInstructionCanvasAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         if (instructionCanvas != null)
-            instructionCanvas.SetActive(false);
+            instructionCanvas.ShowInstructions(textToShow);
     }
+
+    // Canvas positioning and hiding is now handled by InstructionTextCanvas script
 
     private void RegisterInteraction(string interactionType)
     {
