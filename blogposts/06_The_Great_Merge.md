@@ -29,12 +29,12 @@ Once the scenes were finally integrated:
 - portals opened as expected  
 - performance remained acceptable  
 
-We had a mostly working MVP, even if the process wasn’t smooth... at ALL
+We had a mostly working MVP, even if the process wasn’t smooth... at ALL!
 
 ## 🧠 Reflection
 This was the most “real software engineering” week so far.  
 Merging multiple independent XR projects is messy — but facing this together taught us a lot about organization and communication.
-Additionally, we learned an important lesson - to do environments in smaller scales using less assets and focusing more on the interactions, as well as to **never again** leave merging for projects this large for the last few days before the presentation... At least we had fun? Not counting the merging..._shudders in PTSD_
+Additionally, we learned an important lesson - to do environments in smaller scales using less assets and focusing more on the interactions, as well as to **never again** leave merging for projects this large for the last few days before the presentation... At least we had fun? Not counting the merging..._shudders in PTSD_.
 
 ## 🔭 Next Steps
 Final presentation week + final bug fixes after the presentation.
