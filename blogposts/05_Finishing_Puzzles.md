@@ -25,7 +25,7 @@ Once solved, the Mesoamerican room gives clear audio & visual feedback.
 Everyone reached a similar level of polish:
 - Egypt’s Sphinx logic works reliably  
 - China’s gong triggers the exit door  
-- Greece’s oracle gives the player lore  
+- Greece’s vases show depictions of different greek myths, and the Oracle is able to answer yes/no questions 
 
 ## 🧠 Reflection
 This week felt productive and satisfying — seeing interactions run smoothly in VR was extremely motivating.
