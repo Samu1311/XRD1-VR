@@ -1990,15 +1990,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2784617246502845144, guid: be81b45b7764225428c647a0d7be6ddc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -49.29
+      value: -49.23
       objectReference: {fileID: 0}
     - target: {fileID: 2784617246502845144, guid: be81b45b7764225428c647a0d7be6ddc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.21
+      value: 2.28
       objectReference: {fileID: 0}
     - target: {fileID: 2784617246502845144, guid: be81b45b7764225428c647a0d7be6ddc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 67.62
+      value: 68.81
       objectReference: {fileID: 0}
     - target: {fileID: 2784617246502845144, guid: be81b45b7764225428c647a0d7be6ddc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4417,6 +4417,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2073269577}
     m_Modifications:
+    - target: {fileID: 1550329504813192529, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f675742eaf9c20a4f909d78ee7a14fed, type: 2}
+    - target: {fileID: 1550329504813192529, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1550329504813192529, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4029899087311415824, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
       propertyPath: m_RenderMode
       value: 2
@@ -4525,6 +4537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InstructionTextCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8810220486471322935, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4546,6 +4562,26 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5119105694898937701, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
   m_PrefabInstance: {fileID: 720758523}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &720758526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8089850266076969043, guid: 81a93fdf924a8044694726492c3ebf44, type: 3}
+  m_PrefabInstance: {fileID: 720758523}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &720758527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720758526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4b79096e140ed438c418e4ee00959e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instructionText: {fileID: 720758524}
+  displayDuration: 6
+  distanceFromPlayer: 2
 --- !u!1001 &740829777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10890,6 +10926,18 @@ PrefabInstance:
     - target: {fileID: 2593057245536156225, guid: 10a2df6fc60cac94cb90c636e2440c31, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004489153705760284, guid: 10a2df6fc60cac94cb90c636e2440c31, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004489153705760284, guid: 10a2df6fc60cac94cb90c636e2440c31, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004489153705760284, guid: 10a2df6fc60cac94cb90c636e2440c31, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6004489153705760284, guid: 10a2df6fc60cac94cb90c636e2440c31, type: 3}
       propertyPath: m_LocalPosition.x
