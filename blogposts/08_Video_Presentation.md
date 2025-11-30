@@ -12,8 +12,7 @@ Below you’ll find our **official video presentation**, where we walk through t
 ## 🎬 Project Presentation Video
 
 👉 **Watch the full presentation here:**  
-**[INSERT VIDEO LINK HERE]**
-
+(https://youtu.be/CyPfIuBo3qU)
 ---
 
 ## 🧭 What’s Inside the Presentation?
