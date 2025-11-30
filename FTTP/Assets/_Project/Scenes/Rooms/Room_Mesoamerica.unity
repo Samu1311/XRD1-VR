@@ -3543,7 +3543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3055e92efa0e5c47aa97fcba3ccd43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRoomName: Room_China
+  targetRoomName: Room_Greece
 --- !u!95 &2056778815
 Animator:
   serializedVersion: 5

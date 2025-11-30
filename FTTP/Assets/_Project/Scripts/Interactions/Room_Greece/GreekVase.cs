@@ -5,6 +5,9 @@ using TMPro;
 
 public class GreekVase : MonoBehaviour
 {
+    [Header("Vase Identity")]
+    [SerializeField] private string vaseId = "";
+
     [Header("Myth Selection")]
     [SerializeField] private GreekMythDatabase mythDatabase;
     [SerializeField] private int mythIndex = 0;
@@ -24,6 +27,12 @@ public class GreekVase : MonoBehaviour
 
     private void Awake()
     {
+        // Generate unique vase ID if not set
+        if (string.IsNullOrEmpty(vaseId))
+        {
+            vaseId = gameObject.name + "_" + GetInstanceID();
+        }
+
         // Find the room controller
         roomController = FindObjectOfType<GreeceRoomController>();
 
@@ -60,10 +69,11 @@ public class GreekVase : MonoBehaviour
 
     private void OnVaseClicked(SelectEnterEventArgs args)
     {
-        // Notify room controller of vase interaction
+        // Notify room controller of vase interaction with unique ID
         if (roomController != null)
         {
-            roomController.OnVaseInteraction();
+            roomController.OnVaseInteractionWithId(vaseId);
+            Debug.Log($"GreekVase: Interacted with vase ID: {vaseId}");
         }
         PlayAudioClip(magicSoundClip);
         ShowText();
