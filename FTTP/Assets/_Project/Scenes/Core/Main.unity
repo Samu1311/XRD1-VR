@@ -922,7 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3055e92efa0e5c47aa97fcba3ccd43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRoomName: Room_Egypt
+  targetRoomName: Room_Mesoamerica
 --- !u!64 &1890223289
 MeshCollider:
   m_ObjectHideFlags: 0
