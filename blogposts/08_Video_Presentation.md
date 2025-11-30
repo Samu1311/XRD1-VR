@@ -1,54 +1,58 @@
 # 🌟 Forward to the Past – Final Presentation  
 *A VR Journey Across Four Ancient Civilizations*
 
-Welcome to the final showcase of our XR development project, **Forward to the Past** — an interactive VR adventure that transports players through four iconic ancient worlds: **Mesoamerica, Egypt, China, and Greece**.
+Welcome to the final showcase of our XR development project, **Forward to the Past** — an immersive VR adventure that transports players through four ancient worlds: **Mesoamerica, Greece, China, and Egypt**.
 
-Over the course of seven weeks, our team designed, developed, and connected a complete multi-room VR experience built entirely in Unity using the XR Interaction Toolkit. Each room features its own atmosphere, mechanics, and culturally inspired puzzles, all connected through a central time-travel hub.
+Over seven weeks, our team created a complete multi-room VR experience in Unity using the XR Interaction Toolkit. Each room features its own theme, interactions, and culturally inspired puzzle, all connected through a central hub.
 
-Below you’ll find our **official video presentation**, where we walk through the concept, development process, technical details, and final gameplay.
+Below you’ll find our **final gameplay video**, showing the full experience from start to finish.
 
 ---
 
-## 🎬 Project Presentation Video
+## 🎬 Final Gameplay Video
 
-👉 **Watch the full presentation here:**  
+👉 **Watch the gameplay here:**  
 (https://youtu.be/CyPfIuBo3qU)
+
+This video presents a continuous walkthrough of:
+- The main hub  
+- All four puzzle rooms  
+- Interactions, animations, and final transitions  
+
 ---
 
-## 🧭 What’s Inside the Presentation?
+## 🧭 What You’ll See in the Gameplay
 
-### ✨ 1. Project Overview
-- Core concept behind *Forward to the Past*  
-- How the idea evolved  
-- What we aimed to achieve from a design and learning perspective  
+### ✨ Main Hub
+A central area acting as a time portal, letting the player travel to each historical room.
 
-### 🏺 2. Scene & Experience Design
-- Structure of the Main Hub  
-- How rooms load additively in VR  
-- Artistic direction and environmental storytelling  
+### 🏺 Ancient Rooms & Puzzles
 
-### 🧩 3. Puzzle Mechanics
-- **Mesoamerica**: Pressure-plate puzzle  
-- **Egypt**: Sphinx object-collection task  
-- **China**: Gong-strike mechanism  
-- **Greece**: Oracle interaction + myth vases  
+#### **Mesoamerica – Samuele**
+- Three pressure plates triggered by stone boxes  
+- A glowing calendar that activates when the puzzle is solved  
 
-### 🛠️ 4. Technical Implementation
-- Unity XR Interaction Toolkit  
-- Prefab structure & scene management  
-- Collisions, interactions, events  
-- Performance considerations  
+#### **Egypt – Alejandro**
+- An animated Sphinx reacting to placed items  
+- Audio cues that guide the player through the puzzle to find objects  
 
-### 👥 5. Team Workflow
-- Parallel development per room  
-- Merges of initial environments, then a few larger merges of the functionality  
-- Troubleshooting merge conflicts & XR issues  
-- Reflections on teamwork and iteration  
+#### **China – Eliza**
+- A gong that players can strike  
+- An animated door that opens as the puzzle response  
 
-### 🚀 6. Final Gameplay
-- Full walkthrough of every room  
-- Portal transitions  
-- Visual polish & effects  
+#### **Greece – Ginta**
+- Interactive vases displaying Greek myths  
+- A randomized Oracle giving yes/no answers  
+
+---
+
+## 🛠️ How It Was Built (Quick Overview)
+
+- Unity + XR Interaction Toolkit  
+- Grabbable objects, rigidbody physics, and event-driven interactions  
+- Additive scene loading for smooth transitions  
+- Tools such as mesh combining and auto-grabbable setup to optimize workflow  
+- Custom systems for instructions and interactions  
 
 ---
 
@@ -63,10 +67,7 @@ Below you’ll find our **official video presentation**, where we walk through t
 
 ## 🙏 Closing Thoughts
 
-Thank you for taking the time to explore our VR experience.  
-This project pushed us creatively and technically — from designing puzzles to managing XR rigs, from scene loading to collaboration across branches.  
+Thank you for watching our project.  
+This gameplay represents the final state of our VR experience — the puzzles, visuals, interactions, and flow we built together as a team.
 
-We hope you enjoy watching the presentation as much as we enjoyed building the project.
-
-If you have any questions about the implementation or design choices, feel free to reach out!
-
+If you have questions or want insights into the implementation, feel free to ask!
