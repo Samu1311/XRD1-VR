@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
 using System.Collections;
 
 /// Manages the Greece room puzzle progression and portal activation
@@ -45,10 +44,9 @@ public class GreeceRoomController : MonoBehaviour
         StartCoroutine(ShowWelcomeMessageDelayed());
     }
 
-    private System.Collections.IEnumerator ShowWelcomeMessageDelayed()
+    private IEnumerator ShowWelcomeMessageDelayed()
     {
         yield return new WaitForSeconds(3f);
-        Debug.Log("GreeceRoomController: Showing welcome message after 5 second delay");
         ShowWelcomeMessage();
     }
 
@@ -71,9 +69,6 @@ public class GreeceRoomController : MonoBehaviour
         {
             oracleInteracted = true;
             RegisterInteraction("Oracle");
-            Debug.Log("Greece Room: Oracle interaction registered");
-
-            // Oracle instructions are provided in welcome message
         }
     }
 
@@ -83,18 +78,12 @@ public class GreeceRoomController : MonoBehaviour
         if (string.IsNullOrEmpty(vaseId))
         {
             vaseId = "UnknownVase_" + UnityEngine.Random.Range(1000, 9999);
-            Debug.LogWarning("Greece Room: Vase interaction without ID. Use OnVaseInteractionWithId() instead for proper tracking.");
         }
 
         // Only register if this is a new vase
         if (interactedVases.Add(vaseId))
         {
             RegisterInteraction($"Vase ({vaseId})");
-            Debug.Log($"Greece Room: New vase interaction registered: {vaseId}. Total unique vases: {interactedVases.Count}");
-        }
-        else
-        {
-            Debug.Log($"Greece Room: Vase {vaseId} already interacted with. No progress.");
         }
     }
 
@@ -115,12 +104,9 @@ public class GreeceRoomController : MonoBehaviour
     }
 
     // Canvas positioning and hiding is now handled by InstructionTextCanvas script
-
     private void RegisterInteraction(string interactionType)
     {
         totalInteractions++;
-        Debug.Log($"Greece Room: {interactionType} interacted. Total: {totalInteractions}/{requiredInteractions}");
-
         if (totalInteractions >= requiredInteractions && !isCompleted)
         {
             StartCoroutine(CompleteRoom());
@@ -130,11 +116,9 @@ public class GreeceRoomController : MonoBehaviour
     private IEnumerator CompleteRoom()
     {
         isCompleted = true;
-        Debug.Log("Greece Room: Puzzle completed!");
-
         yield return new WaitForSeconds(completionDelay);
 
-        // Show completion message and play sound if we end up adding it
+        // Show completion message
         ShowCompletionMessage();
 
         if (completionSound != null && audioSource != null)
@@ -148,10 +132,8 @@ public class GreeceRoomController : MonoBehaviour
         if (portalActivate != null)
         {
             portalActivate.ActivatePortal();
-            Debug.Log("Greece Room: Portal activated!");
         }
 
-        // Completion event!
         OnRoomCompleted?.Invoke();
     }
 
