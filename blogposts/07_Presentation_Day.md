@@ -15,7 +15,7 @@ Most of the flow worked:
 - Move to the next era  
 - Experience unique environments
 
-There was one of the rooms where the behaviour got broken because of changes in another room, so our last link from Greece to Egypt did not work... sad. Additionally, Egypt had some issues with the usual puzzle behaviour and missing meshes, so - once again, updates and merging were resulting in some weird and anxiety-inducing moments. However, we were determined to fix these issues before submitting the final repository and video! 
+There was one of the rooms where the behaviour got broken because of changes in another room, so our last link from Greece to Egypt did not work... sad. Additionally, Egypt had some issues with the usual puzzle behaviour, so - once again, updates and merging were resulting in some weird and anxiety-inducing moments. However, we were determined to fix these issues before submitting the final repository and video! 
 
 The experience itself taught us also that people would appreciate more direction in the puzzles they have to do, and it was also just interesting to see how people understood interactions with the puzzles — especially the pressure plates and the Chinese gong - and in general enjoyed the large environments we created. At least some successes, yay!
 
